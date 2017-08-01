@@ -69,7 +69,7 @@ let music_piece = {
              },
              {
                  key: 'g/4',
-                 duration: '4',
+                 duration: 4,
                  type: 'note',
                  editable: true,
                  accidental: '',
@@ -78,7 +78,7 @@ let music_piece = {
              },
              {
                  key: 'd/4',
-                 duration: '2',
+                 duration: 2,
                  type: 'note',
                  editable: true,
                  accidental: 'n',
@@ -87,7 +87,7 @@ let music_piece = {
              },
              {
                  key: 'b/4',
-                 duration: '2',
+                 duration: 2,
                  type: 'note',
                  editable: true,
                  accidental: '',
@@ -96,25 +96,25 @@ let music_piece = {
              },
              {
                  key: 'b/4',
-                 duration: '4',
+                 duration: 4,
                  type: 'note',
                  editable: true,
                  accidental: '',
                  hint: '6 5# 3',
-                 rank: 1
+                 rank: null
              },
              {
                  key: 'b/4',
-                 duration: '4',
+                 duration: 4,
                  type: 'note',
                  editable: true,
                  accidental: '',
                  hint: '6 5# 3',
-                 rank: 1
+                 rank: null
              }],
              [{                  // voice 3, tenoro voice
                  key: 'c/4',
-                 duration: '4',
+                 duration: 4,
                  type: 'note',
                  editable: false,
                  accidental: '',
@@ -123,7 +123,7 @@ let music_piece = {
              },
              {
                  key: 'd/4',
-                 duration: '4',
+                 duration: 4,
                  type: 'pause',
                  editable: true,
                  accidental: '',
@@ -132,7 +132,7 @@ let music_piece = {
              },
              {
                  key: 'c/4',
-                 duration: '2',
+                 duration: 2,
                  type: 'note',
                  editable: true,
                  accidental: '',
@@ -154,8 +154,8 @@ let music_piece = {
                  type: 'pause',
                  editable: true,
                  accidental: '',
-                 hint: '6 5# 3',
-                 rank: 1
+                 hint: '',
+                 rank: null
              }]
          ]
      },
@@ -176,8 +176,8 @@ let music_piece = {
                  type: 'note',
                  editable: true,
                  accidental: '',
-                 hint: '6',
-                 rank: 4
+                 hint: '',
+                 rank: null
              },
              {
                  key: 'c/4',
@@ -185,8 +185,8 @@ let music_piece = {
                  type: 'note',
                  editable: true,
                  accidental: '',
-                 hint: '6',
-                 rank: 5
+                 hint: '',
+                 rank: null
              },
              {
                  key: 'b/4',
@@ -195,7 +195,7 @@ let music_piece = {
                  editable: true,
                  accidental: '',
                  hint: '',
-                 rank: 1
+                 rank: null
              },
              {
                  key: 'a/4',
@@ -203,8 +203,8 @@ let music_piece = {
                  type: 'note',
                  editable: true,
                  accidental: '',
-                 hint: '6 4',
-                 rank: 5
+                 hint: '',
+                 rank: null
              },
              {
                  key: 'e/4',
@@ -229,18 +229,20 @@ let romanNumerals = {
     7: 'VII'
 }
 
-let init = () => {
-    VF = Vex.Flow;
-    factory = new VF.Factory({renderer: {elementId: 'boo', width: factoryWidth, height: 1000}})
-    context = factory.getContext();
+let init = (factoryWidth) => {
+    let factory = new VF.Factory({renderer: {elementId: 'boo', width: factoryWidth, height: 1000}})
+    let context = factory.getContext();
+    return {factory: factory,
+            context: context};
 }
 
-getNumOfBars = () => {
+getNumOfBars = (voiceOne, num_beats, beat_value) => {
     totalDuration = 0;
-    for (i = 0; i < music_piece.staves[0].voices[0].length; i++) {
-        totalDuration += 1 / music_piece.staves[0].voices[0][i].duration ; 
+    for (i = 0; i < voiceOne.length; i++) {
+        totalDuration += 1 / voiceOne[i].duration;
     } 
-    numOfBars = totalDuration / (num_beats / beat_value)
+    let numOfBars = totalDuration / (num_beats / beat_value);
+    return numOfBars;
 }
 
 getStemDirection = (k) => {
@@ -260,14 +262,14 @@ getDuration = (duration, type) => {
 }
 
 newAnnotation = (text, position) => {
+    let justification =  VF.Annotation.VerticalJustify.TOP;
     if (position === 'bottom') {
-        return (new VF.Annotation(text)).setVerticalJustification(VF.Annotation.VerticalJustify.BOTTOM);
-    } else {
-        return (new VF.Annotation(text)).setVerticalJustification(VF.Annotation.VerticalJustify.TOP);
+        justification = VF.Annotation.VerticalJustify.BOTTOM
     }
+    return (new VF.Annotation(text)).setVerticalJustification(justification);
 }
 
-addConnectors = (i, changeLine) => {
+addConnectors = (system, i, changeLine, numOfBars) => {
     if (i==0 || changeLine === true) {
         system.addConnector('singleLeft')
         changeLine = false;
@@ -280,59 +282,50 @@ addConnectors = (i, changeLine) => {
     } else {
         system.addConnector('singleRight');
     }
+    return system
 }
 
-checkIfBarCompleted = (note) => {
+checkIfBarCompleted = (note, barDuration, barCompleted, num_beats, beat_value) => {
     if ((1 / note.duration) + barDuration >= (num_beats / beat_value)) {
         barCompleted = true;
         barDuration = 0;
     } else {
         barDuration += 1 / note.duration;
     }
+    return {barDuration: barDuration,
+            barCompleted: barCompleted};
 }
 
-addNotesToStave = (i, voice, iterator, isBass) => {
-    let voiceNotes;
+addNotesToStave = (i, voice, iterator, barCompleted, num_beats, beat_value) => {
     let notesArray = [];
-    let hasAnnotations;
-
-    if (isBass) {
-        voiceNotes = bass;
-        notesArray = bassNotes;
-        hasAnnotations = true;
-    } else {
-        voiceNotes = current_voice;
-        notesArray = trebleNotes;
-        hasAnnotations = false;
-    }
-
+    let barDuration = 0
     while (iterator < voice.length && (barCompleted === false)) {
-        currentNote = voiceNotes[iterator];
+        currentNote = voice[iterator];
         staveNote = new VF.StaveNote({keys: [currentNote.key],
                                       duration: getDuration(currentNote.duration, currentNote.type),
                                       stem_direction: getStemDirection(i)});
         if (currentNote.accidental != '' && currentNote.type !== 'pause') {
             staveNote.addAccidental(0, new VF.Accidental(currentNote.accidental));
         }
-        if (hasAnnotations) {
+        if (currentNote.rank !== null) {
             staveNote.addAnnotation(0, newAnnotation(romanNumerals[currentNote.rank], 'bottom'))
+        }
+        if (currentNote.hint !== null) {
             staveNote.addAnnotation(0, newAnnotation(currentNote.hint, 'top'))
         }
+
         notesArray.push(staveNote);
-        checkIfBarCompleted(currentNote);
+        let checkResults = checkIfBarCompleted(currentNote, barDuration, barCompleted, num_beats, beat_value);
+        barDuration = checkResults.barDuration;
+        barCompleted = checkResults.barCompleted;
         iterator += 1;
     }
 
-    if (isBass) {
-        bassNotesIterator = iterator;
-        bassNotes = notesArray;
-    } else {
-        staveNotesIterator[i] = iterator;
-        trebleNotes = notesArray;
-    }
+    return {iterator: iterator,
+            notesArray: notesArray};
 }
 
-makeSystem = (width, i) => {
+makeSystem = (factory, width, x, y, i, factoryWidth, changeLine) => {
     if (i !== 0 && i * width + 280 >= factoryWidth) {
         y += 250;
         x = 20;
@@ -340,74 +333,86 @@ makeSystem = (width, i) => {
     }
 	system = factory.System({ x: x, y: y, width: width, spaceBetweenStaves: 11});
 	x += width;
-    return system
+    return {system: system,
+            x: x,
+            y: y,
+            changeLine: changeLine};
 }
 
-let system, factory, context;
-let spaceBetweenStaves = 120;
-let factoryWidth = 1000;
-let x = 20;
-let y = 0;
-let num_beats = music_piece.tempo.split('/')[0];
-let beat_value = music_piece.tempo.split('/')[1];
-let numOfBars, trebleStave, bassStave;
-let changeLine = false;
-let staveNotesIterator = [];
-let bassVoice, voices, barDuration, current_voice, trebleNotes, bassNotes, staveNote, barCompleted, currentNote, bass;
-let bassNotesIterator = 0;
+let VF = Vex.Flow;
 
-init();
-getNumOfBars();
 
-// staveNotesIterator counts how many staveNotes of the voice k have been rendered
-for (let k=0; k<music_piece.staves[0].voices.length; k++) { // k iterates through the voices of the treble clef stave
-    staveNotesIterator[k] = 0; 
+renderMusicPiece = (music_piece) => {
+    let system, systemVars;
+    let spaceBetweenStaves = 120;
+    let factoryWidth = 1000;
+    let x = 20;
+    let y = 0;
+    let num_beats = music_piece.tempo.split('/')[0];
+    let beat_value = music_piece.tempo.split('/')[1];
+    let trebleStave, bassStave;
+    let changeLine = false;
+    let staveNotesIterator = [[],[]];
+    let bassVoice, voices, current_voice, trebleNotes, bassNotes, staveNote, barCompleted, currentNote, bass, barWidth;
+    let bassNotesIterator = 0;
+
+    let initResults = init(factoryWidth);
+    let factory = initResults.factory;
+    let context = initResults.context;
+
+    let numOfBars = getNumOfBars(music_piece.staves[0].voices[0], num_beats, beat_value);
+
+    // staveNotesIterator counts how many staveNotes of the voice k have been rendered
+    for (let i = 0; i < music_piece.staves.length; i++) {
+        for (let k = 0; k < music_piece.staves[0].voices.length; k++) { // k iterates through the voices of the treble clef stave
+            staveNotesIterator[i][k] = 0;
+        }
+    }
+    for (let i = 0; i < numOfBars; i++) {
+        voicesToBeRendered = [];
+        stavesToBeRendered = [];
+        if (i === 0) {
+            barWidth = 280;
+        } else {
+            barWidth = 220;
+        }
+        systemResults = makeSystem(factory, barWidth, x, y, i, factoryWidth, changeLine);
+        system = systemResults.system;
+        x = systemResults.x;
+        y = systemResults.y;
+        changeLine = systemResults.changeLine;
+
+        for (let j = 0; j < music_piece.staves.length; j++) {
+            voices = [];
+            for (let k = 0; k < music_piece.staves[j].voices.length; k++) {
+                current_voice = music_piece.staves[j].voices[k];
+                barCompleted = false;
+                let notesToStaveResults = addNotesToStave(k, current_voice, staveNotesIterator[j][k],
+                                            barCompleted, num_beats, beat_value);
+                staveNotesIterator[j][k] = notesToStaveResults.iterator;
+                notes = notesToStaveResults.notesArray;
+                voices.push(new VF.Voice({num_beats: num_beats,  beat_value: beat_value}).addTickables(notes));
+            }
+            stave = system.addStave({
+                voices: voices,
+            });
+
+            if (i === 0) {
+                stave.addClef(music_piece.staves[j].clef).addTimeSignature(music_piece.tempo).addKeySignature(music_piece.key);
+            }
+            if (changeLine === true) {
+                stave.addClef(music_piece.staves[j].clef).addKeySignature(music_piece.key);
+            }
+            voicesToBeRendered.push(voices);
+            stavesToBeRendered.push(stave);
+            
+        }
+        system = addConnectors(system, i, changeLine, numOfBars);
+        for (let i = 0; i < voicesToBeRendered.length; i++) { 
+            factory.draw();
+            voicesToBeRendered[i].forEach((v) => {v.draw(context, stavesToBeRendered[i]);});
+        }
+    }
 }
 
-for (let i=0; i<numOfBars; i++) {
-    bassVoice = []
-    voices = [];
-    // Voices of the treble clef stave
-    for (let k=0; k<music_piece.staves[0].voices.length; k++) { 
-        current_voice = music_piece.staves[0].voices[k];   
-        trebleNotes = [];
-        barCompleted = false; 
-        barDuration = 0;
-        addNotesToStave(k, current_voice, staveNotesIterator[k], false);
-        voices.push(new VF.Voice({num_beats: num_beats,  beat_value: beat_value}).addTickables(trebleNotes));
-    }
-    if (i==0) {
-        system = makeSystem(280, i);
-    } else {
-        system = makeSystem(220, i);
-    }
-    trebleStave = system.addStave({
-        voices: voices,
-    });
-    if (i==0) {
-        trebleStave.addClef('treble').addTimeSignature(music_piece.tempo).addKeySignature(music_piece.key) ;
-    }
-    if (changeLine === true) {
-        trebleStave.addClef('treble').addKeySignature(music_piece.key) ;
-    }
-    // bass Voice 
-    bass = music_piece.staves[1].voices[0]
-    bassNotes = []
-    barCompleted = false;
-    addNotesToStave(0, bass, bassNotesIterator, true);
-    bassStave = system.addStave({
-        voices: bassVoice,
-    }) 
-    if (i==0) {
-        bassStave.addClef('bass').addTimeSignature(music_piece.tempo).addKeySignature(music_piece.key) ;
-    }
-    if (changeLine === true) {
-        bassStave.addClef('bass').addKeySignature(music_piece.key) ;
-    }
-    bassVoice.push(new VF.Voice({num_beats: num_beats,  beat_value: beat_value}).addTickables(bassNotes));
-
-    addConnectors(i, changeLine);
-    factory.draw();
-    voices.forEach(function(v) { v.draw(context, trebleStave); });
-    bassVoice.forEach(function(v) { v.draw(context, bassStave); });
-}
+renderMusicPiece(music_piece);
