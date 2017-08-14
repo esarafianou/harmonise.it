@@ -1,0 +1,4 @@
+*.swp
+*.graphql
+node_modules/
+__*
