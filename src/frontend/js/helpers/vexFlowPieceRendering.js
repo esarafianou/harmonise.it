@@ -120,7 +120,6 @@ let makeSystem = (factory, width, x, y, i, factoryWidth, changeLine) => {
     y: y,
     changeLine: changeLine}
 }
-let Vex
 let VF = Vex.Flow
 
 export default function renderMusicPiece (musicPiece) {

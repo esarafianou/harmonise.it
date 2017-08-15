@@ -1,5 +1,5 @@
 import { GraphQLObjectType, GraphQLString } from 'graphql'
-import { globalIdField, connectionArgs, connectionFromPromisedArray } from 'graphql-relay'
+import { globalIdField, connectionArgs, connectionFromArray } from 'graphql-relay'
 import { nodeInterface } from '../nodeDefinitions'
 import { MusicPiecesConnection } from '../connections/MusicPiecesConnection'
 import { getUser, User, getMusicPieces } from '../../database'
@@ -14,7 +14,7 @@ export const GraphQLUser = new GraphQLObjectType({
       type: MusicPiecesConnection,
       description: 'A music Piece',
       args: {...connectionArgs},
-      resolve: ({id}, ...args) => connectionFromArray(getMusicPieces(id), args)
+      resolve: (obj, {...args}) => connectionFromArray(getMusicPieces(), args)
     }
   }),
   interfaces: () => [nodeInterface]

@@ -1,10 +1,8 @@
-import http from 'http'
 import path from 'path'
 import express from 'express'
 import graphQLHTTP from 'express-graphql'
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-
 import { schema } from './api/schema'
 
 const APP_PORT = 3000;

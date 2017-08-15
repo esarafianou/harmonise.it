@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql, createFragmentContainer } from 'react-relay';
-import { MusicPiece } from './MusicPiece'
+import MusicPiece from './MusicPiece'
 
 class MusicApp extends React.Component {
 	render() {

@@ -2,7 +2,7 @@ let musicPiece = {
   key: 'A',
   tempo: '2/4',
   staves: [{       // 2 staves, 1 for treble clef and 1 for bass clef
-    clief: 'treble',
+    clef: 'treble',
     voices: [[{                  // voice 1, soprano voice
       key: 'c/5',
       duration: 2,
@@ -173,8 +173,8 @@ let musicPiece = {
       duration: 4,
       type: 'note',
       editable: true,
-      accidental: '6 5# 3',
-      hint: '',
+      accidental: '',
+      hint: '6 5# 3',
       rank: 5
     },
     {
@@ -243,14 +243,17 @@ newMusicPiece.info = JSON.stringify(musicPiece)
 musicPiecesById[newMusicPiece.id] = newMusicPiece;
 musicPiecesIdsByUser[VIEWER_ID].push(newMusicPiece.id);
 
-
 export function getUser(id) {
   return usersById[id];
 }
 
+export function getMusicPiece(id) {
+  return musicPiecesById[id];
+}
+
 export function getMusicPieces() {
-	const musicPiece = musicPiecesIdsByUser[VIEWER_ID].map(id => musicPiecesById[id])
-  return MusicPiece[0]
+	const musicPieces = musicPiecesIdsByUser[VIEWER_ID].map(id => musicPiecesById[id])
+  return musicPieces
 }
 
 export function getViewer() {
