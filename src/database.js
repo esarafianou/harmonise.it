@@ -220,42 +220,42 @@ export class MusicPiece {}
 export class User {}
 
 // Mock authenticated ID
-const VIEWER_ID = 'me';
+const VIEWER_ID = 'me'
 
 // Mock user data
-const viewer = new User();
-viewer.id = VIEWER_ID;
-const usersById = { 
-  [VIEWER_ID]: viewer,
-};
+const viewer = new User()
+viewer.id = VIEWER_ID
+const usersById = {
+  [VIEWER_ID]: viewer
+}
 
 // Mock musicPiece data
-const musicPiecesById = {};
+const musicPiecesById = {}
 const musicPiecesIdsByUser = {
-  [VIEWER_ID]: [],
-};
-let nextMusicPieceId = 0;
+  [VIEWER_ID]: []
+}
+let nextMusicPieceId = 0
 
 // Add music Piece
 const newMusicPiece = new MusicPiece()
-newMusicPiece.id = `${nextMusicPieceId++}`;
+newMusicPiece.id = `${nextMusicPieceId++}`
 newMusicPiece.info = JSON.stringify(musicPiece)
-musicPiecesById[newMusicPiece.id] = newMusicPiece;
-musicPiecesIdsByUser[VIEWER_ID].push(newMusicPiece.id);
+musicPiecesById[newMusicPiece.id] = newMusicPiece
+musicPiecesIdsByUser[VIEWER_ID].push(newMusicPiece.id)
 
-export function getUser(id) {
-  return usersById[id];
+export function getUser (id) {
+  return usersById[id]
 }
 
-export function getMusicPiece(id) {
-  return musicPiecesById[id];
+export function getMusicPiece (id) {
+  return musicPiecesById[id]
 }
 
-export function getMusicPieces() {
-	const musicPieces = musicPiecesIdsByUser[VIEWER_ID].map(id => musicPiecesById[id])
+export function getMusicPieces () {
+  const musicPieces = musicPiecesIdsByUser[VIEWER_ID].map(id => musicPiecesById[id])
   return musicPieces
 }
 
-export function getViewer() {
-  return getUser(VIEWER_ID);
+export function getViewer () {
+  return getUser(VIEWER_ID)
 }

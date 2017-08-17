@@ -1,4 +1,3 @@
-
 let romanNumerals = {
   1: 'I',
   2: 'II',
@@ -10,7 +9,7 @@ let romanNumerals = {
 }
 
 let init = (factoryWidth) => {
-  let factory = new VF.Factory({renderer: {elementId: 'vexflow', width: factoryWidth, height: 1000}})
+  let factory = new VF.Factory({renderer: {elementId: 'boo', width: factoryWidth, height: 1000}})
   let context = factory.getContext()
   return {factory: factory,
     context: context}
@@ -79,8 +78,7 @@ let checkIfBarCompleted = (note, barDuration, barCompleted, numBeats, beatValue)
 let addNotesToStave = (i, voice, iterator, barCompleted, numBeats, beatValue) => {
   let notesArray = []
   let barDuration = 0
-  let currentNote, staveNote
-
+  let currentNote, staveNote, checkResults
   while (iterator < voice.length && (barCompleted === false)) {
     currentNote = voice[iterator]
     staveNote = new VF.StaveNote({keys: [currentNote.key],
@@ -97,7 +95,7 @@ let addNotesToStave = (i, voice, iterator, barCompleted, numBeats, beatValue) =>
     }
 
     notesArray.push(staveNote)
-    let checkResults = checkIfBarCompleted(currentNote, barDuration, barCompleted, numBeats, beatValue)
+    checkResults = checkIfBarCompleted(currentNote, barDuration, barCompleted, numBeats, beatValue)
     barDuration = checkResults.barDuration
     barCompleted = checkResults.barCompleted
     iterator += 1
@@ -113,17 +111,18 @@ let makeSystem = (factory, width, x, y, i, factoryWidth, changeLine) => {
     x = 20
     changeLine = true
   }
-  let system = factory.System({x: x, y: y, width: width, spaceBetweenStaves: 11})
+  let system = factory.System({ x: x, y: y, width: width, spaceBetweenStaves: 11 })
   x += width
   return {system: system,
     x: x,
     y: y,
     changeLine: changeLine}
 }
+
 let VF = Vex.Flow
 
 export default function renderMusicPiece (musicPiece) {
-  let system, voices, currentVoice, barCompleted, barWidth, voicesToBeRendered, stavesToBeRendered, systemResults, stave, notes
+  let system, systemResults, voicesToBeRendered, stavesToBeRendered, notes, stave
   let factoryWidth = 1000
   let x = 20
   let y = 0
@@ -131,10 +130,12 @@ export default function renderMusicPiece (musicPiece) {
   let beatValue = musicPiece.tempo.split('/')[1]
   let changeLine = false
   let staveNotesIterator = [[], []]
+  let voices, currentVoice, barCompleted, barWidth
 
   let initResults = init(factoryWidth)
   let factory = initResults.factory
   let context = initResults.context
+
   let numOfBars = getNumOfBars(musicPiece.staves[0].voices[0], numBeats, beatValue)
 
     // staveNotesIterator counts how many staveNotes of the voice k have been rendered
@@ -166,7 +167,7 @@ export default function renderMusicPiece (musicPiece) {
                                             barCompleted, numBeats, beatValue)
         staveNotesIterator[j][k] = notesToStaveResults.iterator
         notes = notesToStaveResults.notesArray
-        voices.push(new VF.Voice({numBeats: numBeats, beatValue: beatValue}).addTickables(notes))
+        voices.push(new VF.Voice({num_beats: numBeats, beatValue: beatValue}).addTickables(notes))
       }
       stave = system.addStave({
         voices: voices
@@ -183,6 +184,7 @@ export default function renderMusicPiece (musicPiece) {
     }
     system = addConnectors(system, i, changeLine, numOfBars)
     for (let i = 0; i < voicesToBeRendered.length; i++) {
+      console.log(factory)
       factory.draw()
       voicesToBeRendered[i].forEach((v) => { v.draw(context, stavesToBeRendered[i]) })
     }

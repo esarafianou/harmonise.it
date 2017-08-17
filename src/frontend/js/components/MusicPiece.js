@@ -1,6 +1,6 @@
 import React from 'react'
 import { graphql, createFragmentContainer } from 'react-relay'
-import { renderMusicPiece } from '../helpers/vexFlowPieceRendering'
+import renderMusicPiece from '../helpers/vexFlowPieceRendering'
 
 class MusicPiece extends React.Component {
   _renderMusic = (musicPieceInfo) => {
@@ -8,10 +8,9 @@ class MusicPiece extends React.Component {
   }
 
 	render() {
-    const musicPiece = this.props.viewer.musicPieces
 		return(
 			<div id="vexflow">
-				{ this._renderMusic(musicPiece.info) }
+				{ this._renderMusic(this.props.viewer.musicPieces.edges[0].node.info) }
 			</div>
     )
   }

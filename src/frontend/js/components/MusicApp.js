@@ -1,21 +1,20 @@
-import React from 'react';
-import { graphql, createFragmentContainer } from 'react-relay';
+import React from 'react'
+import { graphql, createFragmentContainer } from 'react-relay'
 import MusicPiece from './MusicPiece'
 
 class MusicApp extends React.Component {
-	render() {
-    const musicPiece = this.props.viewer
-		return(
-			<div>
+  render () {
+    return (
+      <div>
         <section>
           <header>
             <h1>
-              Music Piece Rendering 
+              Music Piece Rendering
             </h1>
           </header>
-          <MusicPiece viewer = {this.props.viewer} />
+          <MusicPiece viewer={this.props.viewer} />
         </section>
-			</div>
+      </div>
     )
   }
 }
@@ -26,5 +25,5 @@ export default createFragmentContainer(MusicApp, {
       id,
       ...MusicPiece_viewer
     }   
-  `,  
-}); 
+  `
+})

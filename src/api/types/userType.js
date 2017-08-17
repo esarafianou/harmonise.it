@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLObjectType } from 'graphql'
 import { globalIdField, connectionArgs, connectionFromArray } from 'graphql-relay'
 import { nodeInterface } from '../nodeDefinitions'
 import { MusicPiecesConnection } from '../connections/MusicPiecesConnection'

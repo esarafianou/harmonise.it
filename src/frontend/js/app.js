@@ -45,8 +45,10 @@ ReactDOM.render(
     variables={{}}
     render={({error, props}) => {
       if (props) {
+        console.log(props)
         return <MusicApp viewer={props.viewer} />
       } else {
+        console.log(error)
         return <div>Loading</div>
       }
     }}
