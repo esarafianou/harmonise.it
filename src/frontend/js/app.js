@@ -1,14 +1,16 @@
+import BrowserProtocol from 'farce/lib/BrowserProtocol';
+import createFarceRouter from 'found/lib/createFarceRouter';
 import React from 'react'
 import ReactDOM from 'react-dom'
-import fetch from 'isomorphic-fetch'
+import queryMiddleware from 'farce/lib/queryMiddleware';
+import createRender from 'found/lib/createRender';
+import { Environment, Network, RecordSource, Store } from 'relay-runtime';
+import { Resolver } from 'found-relay';
 
-import { QueryRenderer, graphql } from 'react-relay'
-import { Environment, Network, RecordSource, Store } from 'relay-runtime'
-
-import MusicApp from './components/MusicApp'
+import { routeConfig } from './routes';
 
 const mountNode = document.getElementById('boo')
-
+ 
 function fetchQuery (
   operation,
   variables
@@ -32,26 +34,17 @@ const modernEnvironment = new Environment({
   store: new Store(new RecordSource())
 })
 
+const historyMiddlewares = [queryMiddleware]
+const resolver = new Resolver(modernEnvironment);
+const render = createRender({})
+const Router = createFarceRouter({
+  historyProtocol: new BrowserProtocol(),
+  historyMiddlewares,
+  routeConfig,
+  resolver,
+  render,
+})
 ReactDOM.render(
-  <QueryRenderer
-    environment={modernEnvironment}
-    query={graphql`
-      query appQuery {
-        viewer {
-          ...MusicApp_viewer
-        }
-      }
-    `}
-    variables={{}}
-    render={({error, props}) => {
-      if (props) {
-        console.log(props)
-        return <MusicApp viewer={props.viewer} />
-      } else {
-        console.log(error)
-        return <div>Loading</div>
-      }
-    }}
-  />,
+  <Router resolver={resolver} />,
   mountNode
 )

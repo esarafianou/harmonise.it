@@ -8,8 +8,8 @@ let romanNumerals = {
   7: 'VII'
 }
 
-let init = (factoryWidth) => {
-  let factory = new VF.Factory({renderer: {elementId: 'boo', width: factoryWidth, height: 1000}})
+let init = (element, factoryWidth) => {
+  let factory = new VF.Factory({renderer: {elementId: element, width: factoryWidth, height: window.innerHeight - 100}})
   let context = factory.getContext()
   return {factory: factory,
     context: context}
@@ -121,7 +121,11 @@ let makeSystem = (factory, width, x, y, i, factoryWidth, changeLine) => {
 
 let VF = Vex.Flow
 
-export default function renderMusicPiece (musicPiece) {
+export default function renderMusicPiece (element, musicPiece) {
+  if (typeof(window.leak) === 'undefined') {
+    window.leak = []
+  }
+  window.leak.push(1)
   let system, systemResults, voicesToBeRendered, stavesToBeRendered, notes, stave
   let factoryWidth = 1000
   let x = 20
@@ -132,7 +136,7 @@ export default function renderMusicPiece (musicPiece) {
   let staveNotesIterator = [[], []]
   let voices, currentVoice, barCompleted, barWidth
 
-  let initResults = init(factoryWidth)
+  let initResults = init(element, factoryWidth)
   let factory = initResults.factory
   let context = initResults.context
 

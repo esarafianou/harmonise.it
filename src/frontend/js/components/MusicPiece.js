@@ -3,14 +3,15 @@ import { graphql, createFragmentContainer } from 'react-relay'
 import renderMusicPiece from '../helpers/vexFlowPieceRendering'
 
 class MusicPiece extends React.Component {
-  _renderMusic = (musicPieceInfo) => {
-    return renderMusicPiece(JSON.parse(musicPieceInfo))
+  _renderMusic = (element, musicPieceInfo) => {
+    return renderMusicPiece(element, JSON.parse(musicPieceInfo))
   }
-
+  componentDidMount(){
+    { this._renderMusic(this.el, this.props.viewer.musicPieces.edges[0].node.info) }
+  }
 	render() {
 		return(
-			<div id="vexflow">
-				{ this._renderMusic(this.props.viewer.musicPieces.edges[0].node.info) }
+			<div ref={el => this.el = el}>
 			</div>
     )
   }

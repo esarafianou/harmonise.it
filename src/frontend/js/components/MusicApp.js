@@ -1,6 +1,7 @@
 import React from 'react'
 import { graphql, createFragmentContainer } from 'react-relay'
 import MusicPiece from './MusicPiece'
+import { Link } from 'found';
 
 class MusicApp extends React.Component {
   render () {
@@ -12,8 +13,9 @@ class MusicApp extends React.Component {
               Music Piece Rendering
             </h1>
           </header>
-          <MusicPiece viewer={this.props.viewer} />
+          {this.props.children}
         </section>
+        <Link to='/test'> Link to test </Link>
       </div>
     )
   }
@@ -23,7 +25,6 @@ export default createFragmentContainer(MusicApp, {
   viewer: graphql`
     fragment MusicApp_viewer on User {
       id,
-      ...MusicPiece_viewer
     }   
   `
 })
