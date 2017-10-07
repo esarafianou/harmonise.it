@@ -7,7 +7,8 @@ class MusicPiece extends React.Component {
     return renderMusicPiece(element, JSON.parse(musicPieceInfo))
   }
   componentDidMount(){
-    { this._renderMusic(this.el, this.props.viewer.musicPieces.edges[0].node.info) }
+    console.log(this.props.user)
+    { this._renderMusic(this.el, this.props.user.musicPieces.edges[0].node.content) }
   }
 	render() {
 		return(
@@ -18,15 +19,15 @@ class MusicPiece extends React.Component {
 }
 
 export default createFragmentContainer(MusicPiece, {
-  viewer: graphql`
-    fragment MusicPiece_viewer on User {
+  user: graphql`
+    fragment MusicPiece_user on User {
       musicPieces(
         first: 1 
       ) @connection(key: "MusicPiece_musicPieces") {
         edges {
           node {
             id, 
-						info
+						content
           },  
         },  
       },  

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node ./src/server.js",
-    "test": "standard --fix",
+    "database": "babel-node ./src/database.js",
+    "test": "standard",
     "update-schema": "babel-node ./scripts/updateSchema.js",
     "build": "relay-compiler --src ./src/frontend/js/ --schema ./src/api/schema.graphql"
   },
@@ -23,10 +24,14 @@
     "found-relay": "0.3.0-alpha.6",
     "graphql": "^0.10.5",
     "graphql-relay": "^0.5.2",
+    "graphql-sequelize": "^5.4.2",
     "isomorphic-fetch": "^2.2.1",
+    "pg": "~6.4.2",
+    "pg-hstore": "^2.3.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-relay": "^1.1.0",
+    "sequelize": "~3.30.4",
     "standard": "^10.0.3"
   },
   "devDependencies": {

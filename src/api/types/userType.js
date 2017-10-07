@@ -1,23 +1,30 @@
-import { GraphQLObjectType } from 'graphql'
-import { globalIdField, connectionArgs, connectionFromArray } from 'graphql-relay'
-import { nodeInterface } from '../nodeDefinitions'
-import { MusicPiecesConnection } from '../connections/MusicPiecesConnection'
-import { getUser, User, getMusicPieces } from '../../database'
-import { registerType } from '../typeRegistry'
+import { GraphQLObjectType, GraphQLString } from 'graphql'
+import { globalIdField } from 'graphql-relay'
+import { userMusicPiecesConnection } from '../connections/MusicPiecesConnection'
+import Db from '../../database'
+import { sequelize } from 'sequelize'
+import { relay } from 'graphql-sequelize'
 
-export const GraphQLUser = new GraphQLObjectType({
+import { nodeTypeMapper, nodeInterface } from '../sequelizeIntegration'
+
+export const userType = new GraphQLObjectType({
   name: 'User',
-  description: '',
+  description: 'This represents a User',
   fields: () => ({
-    id: globalIdField('User'),
+    id: globalIdField(),
+    userName: {
+      type: GraphQLString
+    },
     musicPieces: {
-      type: MusicPiecesConnection,
       description: 'A music Piece',
-      args: {...connectionArgs},
-      resolve: (obj, {...args}) => connectionFromArray(getMusicPieces(), args)
+      type: userMusicPiecesConnection.connectionType,
+      args: userMusicPiecesConnection.connectionArgs,
+      resolve: userMusicPiecesConnection.resolve
     }
   }),
   interfaces: () => [nodeInterface]
 })
 
-registerType(User, GraphQLUser, getUser)
+nodeTypeMapper.mapTypes({
+  [Db.models.user.id]: userType
+})

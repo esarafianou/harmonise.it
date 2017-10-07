@@ -1,4 +1,6 @@
-let musicPiece = {
+import { Sequelize } from 'sequelize'
+
+let musicPieceInfo = {
   key: 'A',
   tempo: '2/4',
   staves: [{       // 2 staves, 1 for treble clef and 1 for bass clef
@@ -216,46 +218,44 @@ let musicPiece = {
   }]
 }
 
-export class MusicPiece {}
-export class User {}
+const Connection = new Sequelize(
+  'postgres',
+  'postgres',
+  'postgres',
+  {
+    dialect: 'postgres',
+    host: 'localhost'
+  }
+)
 
-// Mock authenticated ID
-const VIEWER_ID = 'me'
+const User = Connection.define('user', {
+  userName: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
+})
 
-// Mock user data
-const viewer = new User()
-viewer.id = VIEWER_ID
-const usersById = {
-  [VIEWER_ID]: viewer
-}
+const MusicPiece = Connection.define('musicpiece', {
+  content: {
+    type: Sequelize.TEXT,
+    allowNull: false
+  }
+})
 
-// Mock musicPiece data
-const musicPiecesById = {}
-const musicPiecesIdsByUser = {
-  [VIEWER_ID]: []
-}
-let nextMusicPieceId = 0
+User.hasMany(MusicPiece)
 
-// Add music Piece
-const newMusicPiece = new MusicPiece()
-newMusicPiece.id = `${nextMusicPieceId++}`
-newMusicPiece.info = JSON.stringify(musicPiece)
-musicPiecesById[newMusicPiece.id] = newMusicPiece
-musicPiecesIdsByUser[VIEWER_ID].push(newMusicPiece.id)
+Connection.sync({ force: true }).then(() => {
+  return User.create({
+    userName: 'testUser',
+	})
+  .then((user) => {
+    return MusicPiece.create({
+			content: JSON.stringify(musicPieceInfo)
+    })
+    .then((musicpiece) => {
+      return user.setMusicpieces(musicpiece)
+		})
+  })
+})
 
-export function getUser (id) {
-  return usersById[id]
-}
-
-export function getMusicPiece (id) {
-  return musicPiecesById[id]
-}
-
-export function getMusicPieces () {
-  const musicPieces = musicPiecesIdsByUser[VIEWER_ID].map(id => musicPiecesById[id])
-  return musicPieces
-}
-
-export function getViewer () {
-  return getUser(VIEWER_ID)
-}
+export default Connection

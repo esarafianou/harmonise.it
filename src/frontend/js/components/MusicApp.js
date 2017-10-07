@@ -1,7 +1,7 @@
 import React from 'react'
 import { graphql, createFragmentContainer } from 'react-relay'
-import MusicPiece from './MusicPiece'
 import { Link } from 'found';
+import MusicPiece from './MusicPiece'
 
 class MusicApp extends React.Component {
   render () {
@@ -22,9 +22,9 @@ class MusicApp extends React.Component {
 }
 
 export default createFragmentContainer(MusicApp, {
-  viewer: graphql`
-    fragment MusicApp_viewer on User {
-      id,
+  user: graphql`
+    fragment MusicApp_user on User {
+      userName,
     }   
   `
 })

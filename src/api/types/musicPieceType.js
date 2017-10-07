@@ -1,21 +1,24 @@
 import { GraphQLObjectType, GraphQLString } from 'graphql'
 import { globalIdField } from 'graphql-relay'
-import { nodeInterface } from '../nodeDefinitions'
-import { getMusicPiece, MusicPiece } from '../../database'
-import { registerType } from '../typeRegistry'
+import { sequelize } from 'sequelize'
+import { relay } from 'graphql-sequelize'
+import Db from '../../database'
 
-export const GraphQLMusicPiece = new GraphQLObjectType({
+import { nodeTypeMapper, nodeInterface } from '../sequelizeIntegration'
+
+export const musicPieceType = new GraphQLObjectType({
   name: 'MusicPiece',
   description: '',
   fields: () => ({
-    id: globalIdField('MusicPiece'),
-    info: {
+    id: globalIdField(),
+    content: {
       type: GraphQLString,
-      description: 'A music Piece',
-      resolve: (obj) => obj.info
+      description: 'A music Piece'
     }
   }),
   interfaces: () => [nodeInterface]
 })
 
-registerType(MusicPiece, GraphQLMusicPiece, getMusicPiece)
+nodeTypeMapper.mapTypes({
+  [Db.models.musicpiece.id]: musicPieceType
+})
