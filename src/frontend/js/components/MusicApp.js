@@ -2,12 +2,16 @@ import React from 'react'
 import { graphql, createFragmentContainer } from 'react-relay'
 import { Link } from 'found';
 import MusicPiece from './MusicPiece'
+import Navigation from '../components/Navigation'
+import Footer from '../components/Footer'
+
 
 class MusicApp extends React.Component {
   render () {
     return (
       <div>
-        <section>
+        <Navigation/>
+        <section className='container-fluid'>
           <header>
             <h1>
               Music Piece Rendering
@@ -15,7 +19,7 @@ class MusicApp extends React.Component {
           </header>
           {this.props.children}
         </section>
-        <Link to='/test'> Link to test </Link>
+        <Footer/>
       </div>
     )
   }
@@ -24,6 +28,7 @@ class MusicApp extends React.Component {
 export default createFragmentContainer(MusicApp, {
   user: graphql`
     fragment MusicApp_user on User {
+      id,
       userName,
     }   
   `

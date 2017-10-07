@@ -6,7 +6,6 @@ export default class Test extends React.Component {
     return (
       <div>
         Test
-      <Link to='/'> go back </Link>
       </div>
     )
   }
