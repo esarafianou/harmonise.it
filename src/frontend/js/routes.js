@@ -6,6 +6,8 @@ import { Resolver } from 'found-relay'
 import React from 'react'
 import { graphql } from 'react-relay'
 import { Environment, Network, RecordSource, Store } from 'relay-runtime'
+import '../../../node_modules/bootstrap/dist/css/bootstrap.css'
+
 
 import MusicApp from './components/MusicApp'
 import MusicPiece from './components/MusicPiece'
