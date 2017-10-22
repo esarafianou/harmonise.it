@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node ./src/server.js",
-    "database": "babel-node ./src/database.js",
+    "database_data": "babel-node ./src/testing_data.js",
     "test": "standard",
     "update-schema": "babel-node ./scripts/updateSchema.js",
     "build": "relay-compiler --src ./src/frontend/js/ --schema ./src/api/schema.graphql"
@@ -32,7 +32,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-relay": "^1.1.0",
-    "sequelize": "~3.30.4",
+    "sequelize": "^4.13.17",
     "standard": "^10.0.3"
   },
   "devDependencies": {
