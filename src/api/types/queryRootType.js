@@ -2,6 +2,7 @@ import { GraphQLObjectType, GraphQLNonNull, GraphQLInt } from 'graphql'
 import { resolver, relay } from 'graphql-sequelize'
 import { sequelize } from 'sequelize'
 import { userType } from './userType'
+import { themeType } from './themeType'
 import Db from '../../database'
 
 import { nodeField } from '../sequelizeIntegration'
@@ -18,6 +19,15 @@ export const queryType = new GraphQLObjectType({
         }
       },
       resolve: () => resolver(Db.models.user)
-    }
+    },
+    theme: {
+      type: themeType,
+      args: {
+        id: {
+          type: new GraphQLNonNull(GraphQLInt)
+        }
+      },
+      resolve: () => resolver(Db.models.theme)
+    },
   })
 })
