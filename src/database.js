@@ -19,7 +19,7 @@ const User = Connection.define('user', {
 })
 
 const Theme = Connection.define('theme', {
-  difficulty: Sequelize.STRING,
+  difficulty: Sequelize.INTEGER,
   description: Sequelize.TEXT,
   given_voice: Sequelize.STRING,
   theme_data: {

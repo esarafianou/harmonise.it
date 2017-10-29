@@ -1,9 +1,9 @@
-import { GraphQLObjectType, GraphQLString, GraphQLInt } from 'graphql'
+import { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList } from 'graphql'
 import { globalIdField } from 'graphql-relay'
 import { sequelize } from 'sequelize'
-import { relay } from 'graphql-sequelize'
-import themeSolutionConnection from '../connections/themeSolutionConnection'
-import Db from '../../database'
+import { resolver } from 'graphql-sequelize'
+import { solutionType } from './solutionType'
+import { Theme, ThemeSolution } from '../../database'
 
 import { nodeTypeMapper, nodeInterface } from '../sequelizeIntegration'
 
@@ -26,15 +26,19 @@ export const themeType = new GraphQLObjectType({
       description: 'The theme to be solved'
     },
     solutions: {
-      description: 'A theme',
-      type: themeSolutionConnection().connectionType,
-      args: themeSolutionConnection().connectionArgs,
-      resolve: themeSolutionConnection().resolve
-    }, 
+      type: new GraphQLList(solutionType),
+      resolve: (obj, args) => {
+        return ThemeSolution.findAll({
+          where: {
+            themeId: obj.id
+          }
+        })
+      }
+    }
   }),
   interfaces: () => [nodeInterface]
 })
 
 nodeTypeMapper.mapTypes({
-  [Db.models.theme.id]: themeType
+  [Theme.id]: themeType
 })

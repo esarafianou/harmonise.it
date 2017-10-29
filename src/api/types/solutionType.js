@@ -1,6 +1,6 @@
 import { GraphQLObjectType, GraphQLString } from 'graphql'
 import { globalIdField } from 'graphql-relay'
-import Db from '../../database'
+import { User, Theme, ThemeSolution } from '../../database'
 import { sequelize } from 'sequelize'
 import { relay } from 'graphql-sequelize'
 import { userType } from './userType'
@@ -12,20 +12,32 @@ export const solutionType = new GraphQLObjectType({
   name: 'SolutionTheme',
   description: 'A user solution of a gven theme',
   fields: () => ({
-    id: globalIdField(),
     solution_data: {
       type: GraphQLString
     },
     user: {
-      type: userType
+      type: userType,
+      resolve: (obj, args) => {
+        return User.find({
+          where: {
+            id: obj.userId
+          }
+        })
+      }
     },
     theme: {
-      type: themeType
+      type: themeType,
+      resolve: (obj, args) => {
+        return Theme.find({
+          where: {
+            id: obj.themeId
+          }
+        })
+      }
     },
   }),
-  interfaces: () => [nodeInterface]
 })
 
 nodeTypeMapper.mapTypes({
-  [Db.models.theme_solution.userId]: solutionType
+  [ThemeSolution.userId]: solutionType
 })

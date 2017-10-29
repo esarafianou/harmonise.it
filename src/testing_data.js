@@ -287,7 +287,10 @@ Connection.sync({ force: true }).then(() => {
 	})
   .then((user) => {
     return Theme.create({
-			theme_data: JSON.stringify(themeData)
+      difficulty: 1,
+      description: 'first theme',
+      given_voice: 'soprano',
+      theme_data: JSON.stringify(themeData)
     })
     .then((theme) => {
       return user.addSolution(theme, { through: { solution_data: JSON.stringify(themeSolutionData) }})

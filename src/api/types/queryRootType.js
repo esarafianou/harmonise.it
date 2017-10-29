@@ -3,7 +3,7 @@ import { resolver, relay } from 'graphql-sequelize'
 import { sequelize } from 'sequelize'
 import { userType } from './userType'
 import { themeType } from './themeType'
-import Db from '../../database'
+import { User, Theme }  from '../../database'
 
 import { nodeField } from '../sequelizeIntegration'
 
@@ -18,7 +18,7 @@ export const queryType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLInt)
         }
       },
-      resolve: () => resolver(Db.models.user)
+      resolve: resolver(User)
     },
     theme: {
       type: themeType,
@@ -27,7 +27,7 @@ export const queryType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLInt)
         }
       },
-      resolve: () => resolver(Db.models.theme)
+      resolve: resolver(Theme)
     },
   })
 })
