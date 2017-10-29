@@ -1,10 +1,7 @@
 import { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList } from 'graphql'
 import { globalIdField } from 'graphql-relay'
-import { sequelize } from 'sequelize'
-import { resolver } from 'graphql-sequelize'
 import { solutionType } from './solutionType'
 import { Theme, ThemeSolution } from '../../database'
-
 import { nodeTypeMapper, nodeInterface } from '../sequelizeIntegration'
 
 export const themeType = new GraphQLObjectType({

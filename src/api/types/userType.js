@@ -1,18 +1,14 @@
-
 import { GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql'
 import { globalIdField } from 'graphql-relay'
 import { User, ThemeSolution } from '../../database'
 import { solutionType } from './solutionType'
-import { sequelize } from 'sequelize'
-import { resolver } from 'graphql-sequelize'
-
 import { nodeTypeMapper, nodeInterface } from '../sequelizeIntegration'
 
 export const userType = new GraphQLObjectType({
   name: 'User',
   description: 'This represents a User',
   fields: () => ({
-    id: globalIdField(User.name),
+    id: globalIdField(),
     name: {
       type: GraphQLString
     },
@@ -31,5 +27,5 @@ export const userType = new GraphQLObjectType({
 })
 
 nodeTypeMapper.mapTypes({
-  [User.name]: userType
+  [User.id]: userType
 })
