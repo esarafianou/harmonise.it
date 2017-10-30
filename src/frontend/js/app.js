@@ -6,6 +6,7 @@ import queryMiddleware from 'farce/lib/queryMiddleware';
 import createRender from 'found/lib/createRender';
 import { Environment, Network, RecordSource, Store } from 'relay-runtime';
 import { Resolver } from 'found-relay';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import { routeConfig } from './routes';
 
@@ -44,7 +45,10 @@ const Router = createFarceRouter({
   resolver,
   render,
 })
+
 ReactDOM.render(
-  <Router resolver={resolver} />,
+    <MuiThemeProvider>    
+      <Router resolver={resolver} />
+    </MuiThemeProvider>,
   mountNode
 )

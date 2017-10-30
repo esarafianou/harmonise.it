@@ -27,6 +27,7 @@
     "graphql-relay": "^0.5.2",
     "graphql-sequelize": "^5.4.2",
     "isomorphic-fetch": "^2.2.1",
+    "material-ui": "^0.19.4",
     "pg": "~6.4.2",
     "pg-hstore": "^2.3.2",
     "react": "^15.6.1",

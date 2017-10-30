@@ -1,12 +1,8 @@
 import React from 'react'
-import { graphql, createFragmentContainer } from 'react-relay'
-import { Link } from 'found';
-import MusicPiece from './MusicPiece'
 import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
 
-
-class MusicApp extends React.Component {
+export default class Layout extends React.Component {
   render () {
     return (
       <div>
@@ -24,12 +20,3 @@ class MusicApp extends React.Component {
     )
   }
 }
-
-export default createFragmentContainer(MusicApp, {
-  user: graphql`
-    fragment MusicApp_user on User {
-      id,
-      userName,
-    }   
-  `
-})
