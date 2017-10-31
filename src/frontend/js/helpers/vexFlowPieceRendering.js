@@ -122,7 +122,7 @@ let makeSystem = (factory, width, x, y, i, factoryWidth, changeLine) => {
 let VF = Vex.Flow
 
 export default function renderMusicPiece (element, musicPiece) {
-  if (typeof(window.leak) === 'undefined') {
+  if (typeof (window.leak) === 'undefined') {
     window.leak = []
   }
   window.leak.push(1)

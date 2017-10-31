@@ -6,7 +6,7 @@ export default class Layout extends React.Component {
   render () {
     return (
       <div>
-        <Navigation/>
+        <Navigation />
         <section className='container-fluid'>
           <header>
             <h1>
@@ -15,7 +15,7 @@ export default class Layout extends React.Component {
           </header>
           {this.props.children}
         </section>
-        <Footer/>
+        <Footer />
       </div>
     )
   }
