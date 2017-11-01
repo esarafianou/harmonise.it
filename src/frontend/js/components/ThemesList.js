@@ -1,11 +1,23 @@
 import React from 'react'
 import { graphql, createFragmentContainer } from 'react-relay'
 import { List, ListItem } from 'material-ui'
+import renderTheme from '../helpers/vexFlowThemeRendering'
+import ThemeData from './ThemeData'
 
 class ThemesList extends React.Component {
   createthemesList = (themes) => {
+    let id
     return themes.map((theme, i) => {
-      return <ListItem key={i}> {theme.description} </ListItem>
+      id = 'theme' + i.toString()
+      return (
+        <ListItem key={i}>
+          <List>
+            <ListItem> Given voice: {theme.given_voice} </ListItem>
+            <ListItem> {theme.description} </ListItem>
+            <ListItem> <ThemeData themeData={theme.theme_data} id={id} /> </ListItem>
+          </List>
+        </ListItem>
+      )
     })
   }
 
@@ -23,6 +35,9 @@ export default createFragmentContainer(ThemesList,
     fragment ThemesList_themes on Theme @relay(plural: true) {
       id,
       description
+      difficulty,
+      given_voice,
+      theme_data
     }
   `
 )
