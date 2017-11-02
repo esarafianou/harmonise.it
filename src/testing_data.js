@@ -295,6 +295,16 @@ Connection.sync({ force: true }).then(() => {
     .then((theme) => {
       return user.addSolution(theme, { through: { solution_data: JSON.stringify(themeSolutionData) }})
 		})
+    .then(() => {
+      return Theme.create({
+        difficulty: 2,
+        description: 'second theme',
+        given_voice: 'soprano',
+        theme_data: JSON.stringify(themeData)
+      })
+    }).then((theme) => {
+      return user.addSolution(theme, { through: { solution_data: JSON.stringify(themeSolutionData) }})
+		})
   })
   .catch((error) => {
     console.log(error)
