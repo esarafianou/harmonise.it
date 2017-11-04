@@ -2,19 +2,28 @@ import React from 'react'
 import { graphql, createFragmentContainer } from 'react-relay'
 import renderTheme from '../helpers/vexFlowThemeRendering'
 
-export default class ThemeData extends React.Component {
+class ThemeData extends React.Component {
   _renderTheme = (element, themeInfo) => {
     return renderTheme(element, JSON.parse(themeInfo))
   }
 
   componentDidMount () {
-      this._renderTheme(this.props.id, this.props.themeData)
+      console.log(this.props.theme.description)
+      this._renderTheme(this.el, this.props.theme.theme_data)
   }
 
   render () {
     return (
-      <div id={this.props.id} ref={el => this.el = el}>
+      <div ref={el => this.el = el}>
       </div>
     )
   }
 }
+
+export default createFragmentContainer(ThemeData,
+  graphql`
+    fragment ThemeData_theme on Theme {
+      theme_data
+    }
+  `
+)

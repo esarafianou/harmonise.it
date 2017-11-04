@@ -8,13 +8,12 @@ class ThemesList extends React.Component {
   createthemesList = (themes) => {
     let id
     return themes.map((theme, i) => {
-      id = 'theme' + i.toString()
       return (
         <ListItem key={i}>
           <List>
             <ListItem> Given voice: {theme.given_voice} </ListItem>
             <ListItem> {theme.description} </ListItem>
-            <ListItem> <ThemeData themeData={theme.theme_data} id={id} /> </ListItem>
+            <ListItem> <ThemeData theme={theme} /> </ListItem>
           </List>
         </ListItem>
       )
@@ -37,7 +36,7 @@ export default createFragmentContainer(ThemesList,
       description
       difficulty,
       given_voice,
-      theme_data
+      ...ThemeData_theme
     }
   `
 )
