@@ -9,6 +9,7 @@ export const solutionType = new GraphQLObjectType({
   name: 'SolutionTheme',
   description: 'A user solution of a gven theme',
   fields: () => ({
+    id: globalIdField(),
     solution_data: {
       type: GraphQLString
     },

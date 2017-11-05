@@ -29,6 +29,11 @@ const Theme = Connection.define('theme', {
 })
 
 const ThemeSolution = Connection.define('theme_solution', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   solution_data: {
     type: Sequelize.TEXT,
     allowNull: false
