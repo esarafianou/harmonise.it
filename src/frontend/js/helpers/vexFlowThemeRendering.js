@@ -123,7 +123,7 @@ export default function renderTheme (element, musicPiece) {
   let initResults = init(element, factoryWidth)
   let context = initResults.context
 
-  let numOfBars = getNumOfBars(musicPiece.staves[0].voices[0], numBeats, beatValue)
+  let numOfBars = getNumOfBars(musicPiece.voice, numBeats, beatValue)
 
   staveNotesIterator = 0
 
@@ -140,7 +140,7 @@ export default function renderTheme (element, musicPiece) {
     y = staveResults.y
     changeLine = staveResults.changeLine
 
-    currentVoice = musicPiece.staves[0].voices[0]
+    currentVoice = musicPiece.voice
     barCompleted = false
     let notesToStaveResults = addNotesToStave(0, currentVoice, staveNotesIterator,
                                         barCompleted, numBeats, beatValue)
@@ -149,10 +149,10 @@ export default function renderTheme (element, musicPiece) {
     let voice = new VF.Voice({num_beats: numBeats, beatValue: beatValue}).addTickables(notes)
 
     if (i === 0) {
-      stave.addClef(musicPiece.staves[0].clef).addTimeSignature(musicPiece.tempo).addKeySignature(musicPiece.key)
+      stave.addClef(musicPiece.clef).addTimeSignature(musicPiece.tempo).addKeySignature(musicPiece.key)
     }
     if (changeLine === true) {
-      stave.addClef(musicPiece.staves[0].clef).addKeySignature(musicPiece.key)
+      stave.addClef(musicPiece.clef).addKeySignature(musicPiece.key)
     }
     stave.setContext(context).draw()
 
