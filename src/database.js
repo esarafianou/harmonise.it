@@ -40,8 +40,8 @@ const ThemeSolution = Connection.define('theme_solution', {
   }
 })
 
-User.Solutions = User.belongsToMany(Theme, { through: ThemeSolution, as: 'solutions' })
-Theme.Solutions = Theme.belongsToMany(User, { through: ThemeSolution, as: 'solutions' })
+User.Solutions = User.hasMany(ThemeSolution)
+Theme.Solutions = Theme.hasMany(ThemeSolution)
 
 export { Theme, User, ThemeSolution }
 export default Connection
