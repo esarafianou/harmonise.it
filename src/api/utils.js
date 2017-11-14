@@ -1,4 +1,4 @@
-import { FromGlobalId } from 'graphql-relay'
+import { fromGlobalId } from 'graphql-relay'
 
 export const resolver = (model) => {
   return (obj, args) => {
