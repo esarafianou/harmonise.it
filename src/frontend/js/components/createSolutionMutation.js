@@ -4,24 +4,26 @@ const mutation = graphql`
   mutation createSolutionMutation($input: createSolutionInput!) {
     createSolution(input: $input) {
       solution{
+        id,
         solution_data
       }
     }
   }
 `;
 
-function commit(environment, theme) {
+function commit(props, theme) {
+  const environment = props.relay.environment
+  const router = props.router
   return commitMutation(environment, {
     mutation,
     variables: {
       input: {
         themeId: theme.id,
-        userId: 'VXNlcjogMQ=='
       },
     },
     onCompleted: (response, errors) => {
-      console.log('Response received from server.', response)
-      console.log(response.createSolution)
+      let solutionId = response.createSolution.solution.id
+      router.push('/solutions/'+ solutionId)
     },
     onError: err => console.error(err),
   });

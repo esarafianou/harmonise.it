@@ -7,8 +7,8 @@ import createSolutionMutation from './createSolutionMutation'
 
 class ThemesList extends React.Component {
   createSolution(theme) {
-    const { relay } = this.props; 
-    createSolutionMutation.commit(relay.environment, theme);
+    const { relay, router } = this.props;
+    createSolutionMutation.commit(this.props, theme);
   }
 
   createthemesList = (themes) => {

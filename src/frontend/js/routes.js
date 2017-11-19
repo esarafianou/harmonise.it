@@ -7,6 +7,7 @@ import '../../../node_modules/bootstrap/dist/css/bootstrap.css'
 import Layout from './components/Layout'
 import ThemesList from './components/ThemesList'
 import Test from './components/Test'
+import Solution from './components/Solution'
 
 const ThemesListQuery = graphql`
   query routes_ThemesList_Query {
@@ -15,6 +16,14 @@ const ThemesListQuery = graphql`
     }
   }
 `
+const SolutionQuery = graphql`
+  query routes_Solution_Query($solutionId: String!) {
+    solution(id: $solutionId) {
+      ...Solution_solution
+    }
+  }
+`
+
 export const routeConfig = makeRouteConfig(
   <Route
     path='/'
@@ -24,6 +33,11 @@ export const routeConfig = makeRouteConfig(
       Component={ThemesList}
       query={ThemesListQuery}
     />,
+    <Route
+      path='/solutions/:solutionId'
+      Component={Solution}
+      query={SolutionQuery}
+    />
     <Route
       path='test'
       Component={Test}
