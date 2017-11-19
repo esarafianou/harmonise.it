@@ -29,9 +29,6 @@ export const createSolutionMutation = mutationWithClientMutationId({
     themeId: {
       type: new GraphQLNonNull(GraphQLString)
     },
-    userId: {
-      type: new GraphQLNonNull(GraphQLString)
-    },
   },
   outputFields: {
     solution: {
@@ -41,11 +38,10 @@ export const createSolutionMutation = mutationWithClientMutationId({
       })
     },
   },
-  mutateAndGetPayload: ({userId, themeId }) => {
-    const { type, id } = fromGlobalId(userId)
+  mutateAndGetPayload: ({ themeId }) => {
     return User.find({
       where: {
-        id: id
+        id: 1
       }
     })
     .then((user) => {
