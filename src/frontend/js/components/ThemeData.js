@@ -8,7 +8,6 @@ class ThemeData extends React.Component {
   }
 
   componentDidMount () {
-      console.log(this.props.theme.description)
       this._renderTheme(this.el, this.props.theme.theme_data)
   }
 

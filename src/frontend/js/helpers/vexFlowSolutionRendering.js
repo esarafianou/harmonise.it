@@ -188,7 +188,6 @@ export default function renderMusicPiece (element, musicPiece) {
     }
     system = addConnectors(system, i, changeLine, numOfBars)
     for (let i = 0; i < voicesToBeRendered.length; i++) {
-      console.log(factory)
       factory.draw()
       voicesToBeRendered[i].forEach((v) => { v.draw(context, stavesToBeRendered[i]) })
     }
