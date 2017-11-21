@@ -43,5 +43,4 @@ const ThemeSolution = Connection.define('theme_solution', {
 User.Solutions = User.hasMany(ThemeSolution)
 Theme.Solutions = Theme.hasMany(ThemeSolution)
 
-export { Theme, User, ThemeSolution }
-export default Connection
+export { Theme, User, ThemeSolution, Connection }

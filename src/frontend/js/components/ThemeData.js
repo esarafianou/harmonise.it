@@ -8,13 +8,12 @@ class ThemeData extends React.Component {
   }
 
   componentDidMount () {
-      this._renderTheme(this.el, this.props.theme.theme_data)
+    this._renderTheme(this.el, this.props.theme.theme_data)
   }
 
   render () {
     return (
-      <div ref={el => this.el = el}>
-      </div>
+      <div ref={el => this.el = el} />
     )
   }
 }

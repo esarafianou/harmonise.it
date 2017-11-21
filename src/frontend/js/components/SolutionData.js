@@ -15,8 +15,7 @@ class SolutionData extends React.Component {
 
   render () {
     return (
-      <div ref={el => this.el = el}>
-      </div>
+      <div ref={el => this.el = el} />
     )
   }
 }

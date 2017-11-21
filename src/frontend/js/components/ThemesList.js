@@ -1,18 +1,15 @@
 import React from 'react'
 import { graphql, createFragmentContainer } from 'react-relay'
 import { List, ListItem } from 'material-ui'
-import renderTheme from '../helpers/vexFlowThemeRendering'
 import ThemeData from './ThemeData'
 import createSolutionMutation from './createSolutionMutation'
 
 class ThemesList extends React.Component {
-  createSolution(theme) {
-    const { relay, router } = this.props;
-    createSolutionMutation.commit(this.props, theme);
+  createSolution (theme) {
+    createSolutionMutation.commit(this.props, theme)
   }
 
   createthemesList = (themes) => {
-    let id
     return themes.map((theme, i) => {
       return (
         <ListItem key={i}>
@@ -20,7 +17,7 @@ class ThemesList extends React.Component {
             <ListItem> Given voice: {theme.given_voice} </ListItem>
             <ListItem> {theme.description} </ListItem>
             <ListItem> <ThemeData theme={theme} /> </ListItem>
-            <button onClick={() => { this.createSolution(theme) }}>Solve it! </button> 
+            <button onClick={() => { this.createSolution(theme) }}>Solve it! </button>
           </List>
         </ListItem>
       )

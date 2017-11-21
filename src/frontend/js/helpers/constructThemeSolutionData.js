@@ -1,15 +1,15 @@
-export const constructThemeSolutionData = (themeData, solutionData, givenVoice) =>  {
+export const constructThemeSolutionData = (themeData, solutionData, givenVoice) => {
   let themeSolutionData = {}
   themeSolutionData.key = themeData.key
   themeSolutionData.tempo = themeData.tempo
   let trebleStaveVoices = []
   let clefStaveVoices = []
-  if (givenVoice ===  'soprano') {
+  if (givenVoice === 'soprano') {
     trebleStaveVoices.push(themeData.voice)
     trebleStaveVoices.push(solutionData[0], solutionData[1])
     clefStaveVoices.push(solutionData[2])
   } else {
-    trebleStaveVoices = solutionData 
+    trebleStaveVoices = solutionData
     clefStaveVoices.push(themeData.voice)
   }
   let staves = []

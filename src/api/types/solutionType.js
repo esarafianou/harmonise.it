@@ -32,8 +32,8 @@ export const solutionType = new GraphQLObjectType({
           }
         })
       }
-    },
-  }),
+    }
+  })
 })
 
 nodeTypeMapper.mapTypes({

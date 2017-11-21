@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLList } from 'graphql'
+import { GraphQLObjectType } from 'graphql'
 import { createSolutionMutation } from './createSolutionMutation'
 
 export const mutationType = new GraphQLObjectType({
@@ -6,6 +6,4 @@ export const mutationType = new GraphQLObjectType({
   fields: () => ({
     createSolution: createSolutionMutation
   })
-});
-
-
+})

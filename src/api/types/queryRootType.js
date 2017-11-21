@@ -1,10 +1,8 @@
 import { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLList } from 'graphql'
-import { fromGlobalId } from 'graphql-relay'
-import { sequelize } from 'sequelize'
 import { userType } from './userType'
 import { solutionType } from './solutionType'
 import { themeType } from './themeType'
-import { User, Theme, ThemeSolution }  from '../../database'
+import { User, Theme, ThemeSolution } from '../../database'
 import { resolver } from '../utils'
 import { nodeField } from '../sequelizeIntegration'
 
@@ -50,6 +48,6 @@ export const queryType = new GraphQLObjectType({
       resolve: (obj, args) => {
         return ThemeSolution.findAll()
       }
-    },
+    }
   })
 })
