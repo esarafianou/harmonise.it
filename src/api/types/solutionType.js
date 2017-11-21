@@ -33,9 +33,10 @@ export const solutionType = new GraphQLObjectType({
         })
       }
     }
-  })
+  }),
+  interfaces: () => [nodeInterface]
 })
 
 nodeTypeMapper.mapTypes({
-  [ThemeSolution.userId]: solutionType
+  [ThemeSolution.id]: solutionType
 })
