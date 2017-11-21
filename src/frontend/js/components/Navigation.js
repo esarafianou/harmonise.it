@@ -10,8 +10,8 @@ export default class Navigation extends React.Component {
             <Link to='/' className='navbar-brand'>Harmonise.it</Link>
           </div>
           <ul className='nav navbar-nav'>
-            <li><Link to='/'>Home</Link></li>
-            <li><Link to='/test'>Test</Link></li>
+            <li><Link to='/'>Themes</Link></li>
+            <li><Link to='/solutions'>My Solutions</Link></li>
           </ul>
         </div>
       </nav>
