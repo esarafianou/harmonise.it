@@ -5,9 +5,7 @@ import SolutionData from './SolutionData'
 
 class SolutionsList extends React.Component {
   createSolutionsList = (solutions) => {
-    console.log(solutions)
     return solutions.map((solution, i) => {
-      console.log(solution)
       return (
         <ListItem key={i}>
           <List>
@@ -23,9 +21,14 @@ class SolutionsList extends React.Component {
 
   render () {
     return (
-      <List>
-        { this.createSolutionsList(this.props.solutions) }
-      </List>
+      <div>
+          <header>
+            <h1> My Solutions </h1>
+          </header>
+        <List>
+          { this.createSolutionsList(this.props.solutions) }
+        </List>
+      </div>
     )
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { graphql, createFragmentContainer } from 'react-relay'
-import { List, ListItem } from 'material-ui'
+import { List, ListItem, RaisedButton } from 'material-ui'
 import ThemeData from './ThemeData'
 import createSolutionMutation from './createSolutionMutation'
 
@@ -17,7 +17,7 @@ class ThemesList extends React.Component {
             <ListItem> Given voice: {theme.given_voice} </ListItem>
             <ListItem> {theme.description} </ListItem>
             <ListItem> <ThemeData theme={theme} /> </ListItem>
-            <button onClick={() => { this.createSolution(theme) }}>Solve it! </button>
+            <RaisedButton onClick={() => { this.createSolution(theme) }}>Solve it! </RaisedButton>
           </List>
         </ListItem>
       )
@@ -26,9 +26,15 @@ class ThemesList extends React.Component {
 
   render () {
     return (
-      <List>
-        { this.createthemesList(this.props.themes) }
-      </List>
+      <div>
+        <header>
+          <h1> Themes </h1>
+        </header>
+        <div> Choose a theme and start solving its music harmony </div>
+          <List>
+            { this.createthemesList(this.props.themes) }
+          </List>
+      </div>
     )
   }
 }

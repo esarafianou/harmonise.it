@@ -8,11 +8,6 @@ export default class Layout extends React.Component {
       <div>
         <Navigation />
         <section className='container-fluid'>
-          <header>
-            <h1>
-              Music Piece Rendering
-            </h1>
-          </header>
           {this.props.children}
         </section>
         <Footer />
