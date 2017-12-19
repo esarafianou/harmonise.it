@@ -56,7 +56,8 @@ let themeData = {
 
 Connection.sync({ force: true }).then(() => {
   return User.create({
-    name: 'testUser'
+    username: 'testUser',
+    password: 'mypassword'
   })
   .then((user) => {
     return Theme.create({

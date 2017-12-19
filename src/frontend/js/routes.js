@@ -8,6 +8,7 @@ import Layout from './components/Layout'
 import ThemesList from './components/ThemesList'
 import SolutionsList from './components/SolutionsList'
 import Solution from './components/Solution'
+import Register from './components/Register'
 
 const ThemesListQuery = graphql`
   query routes_ThemesList_Query {
@@ -51,6 +52,10 @@ export const routeConfig = makeRouteConfig(
       path='/solutions/:solutionId'
       Component={Solution}
       query={SolutionQuery}
+    />
+    <Route
+      path='/register'
+      Component={Register}
     />
   </Route>
 )

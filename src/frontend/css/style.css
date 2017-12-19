@@ -1,0 +1,20 @@
+.notification{
+    position:fixed;
+    z-index:101;
+    top:55px;
+    left:38%;
+    right:38%;
+    background:#f2f2f2;
+    height:35px;
+    text-align:center;
+    line-height:2.5;
+    overflow:hidden;
+    -webkit-box-shadow:0 0 5px #a6a6a6;
+    -moz-box-shadow: 0 0 5px #a6a6a6;
+    box-shadow:0 0 5px #a6a6a6;
+}
+.notification p{
+    padding-left:40px;
+    float:left;
+    clear:none;
+}

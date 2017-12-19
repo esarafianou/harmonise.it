@@ -9,6 +9,7 @@ import { Resolver } from 'found-relay'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import 'isomorphic-fetch'
 import { routeConfig } from './routes'
+import '../css/style.css'
 
 const mountNode = document.getElementById('boo')
 
@@ -30,7 +31,7 @@ function fetchQuery (
   })
 }
 
-const modernEnvironment = new Environment({
+export const modernEnvironment = new Environment({
   network: Network.create(fetchQuery),
   store: new Store(new RecordSource())
 })

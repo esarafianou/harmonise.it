@@ -12,6 +12,7 @@ export default class Navigation extends React.Component {
           <ul className='nav navbar-nav'>
             <li><Link to='/'>Themes</Link></li>
             <li><Link to='/solutions'>My Solutions</Link></li>
+            <li><Link to='/register'>Register</Link></li>
           </ul>
         </div>
       </nav>
