@@ -2,6 +2,7 @@ import { GraphQLNonNull, GraphQLString } from 'graphql'
 import { mutationWithClientMutationId } from 'graphql-relay'
 import { userType } from './userType.js'
 import { User } from '../../database.js'
+import * as argon2 from 'argon2'
 
 export const registerUserMutation = mutationWithClientMutationId({
   name: 'registerUser',
@@ -25,9 +26,17 @@ export const registerUserMutation = mutationWithClientMutationId({
     }
   },
   mutateAndGetPayload: ({ username, password, confirmPassword }) => {
-    return User.create({
-      username: username,
-      password: password
-    })
+    if (password !== confirmPassword) {
+      throw new Error('Invalid username or password')
+    } else {
+      return argon2.hash(password).then(hashedPassword => {
+        return User.create({
+          username: username,
+          password: hashedPassword
+        })
+      }).catch(() => {
+        throw new Error('Something went wrong. Please try to register again')
+      })
+    }
   }
 })
