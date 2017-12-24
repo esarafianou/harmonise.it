@@ -2,3 +2,4 @@
 *.graphql
 node_modules/
 __*
+dist

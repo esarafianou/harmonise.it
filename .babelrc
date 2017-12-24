@@ -1,8 +1,6 @@
 {
-  "passPerPreset": true,
   "plugins": [
     "relay",
-    "transform-runtime"
   ],
   "presets": [
     "react",
