@@ -7,7 +7,7 @@
     "start": "babel-node ./src/server.js",
     "database_data": "babel-node ./src/testing_data.js",
     "devserver": "webpack-dev-server --config webpack.dev.js",
-    "lint": "standard --parser babel-eslint",
+    "lint": "standard",
     "relay": "babel-node scripts/updateSchema.js && relay-compiler --src ./src/frontend/js --schema ./src/api/schema.graphql",
     "build": "npm run relay && webpack"
   },

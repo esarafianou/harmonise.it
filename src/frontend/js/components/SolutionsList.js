@@ -4,7 +4,7 @@ import { List, ListItem } from 'material-ui'
 import SolutionData from './SolutionData'
 
 class SolutionsList extends React.Component {
-  createSolutionsList = (solutions) => {
+  createSolutionsList (solutions) {
     return solutions.map((solution, i) => {
       return (
         <ListItem key={i}>
@@ -22,9 +22,9 @@ class SolutionsList extends React.Component {
   render () {
     return (
       <div>
-          <header>
-            <h1> My Solutions </h1>
-          </header>
+        <header>
+          <h1> My Solutions </h1>
+        </header>
         <List>
           { this.createSolutionsList(this.props.solutions) }
         </List>

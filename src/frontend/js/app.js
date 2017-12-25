@@ -18,7 +18,7 @@ function fetchQuery (
   operation,
   variables
 ) {
-  return fetch('/api', {
+  return window.fetch('/api', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

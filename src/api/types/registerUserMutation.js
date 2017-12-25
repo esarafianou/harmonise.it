@@ -1,5 +1,5 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql'
-import { mutationWithClientMutationId, fromGlobalId } from 'graphql-relay'
+import { mutationWithClientMutationId } from 'graphql-relay'
 import { userType } from './userType.js'
 import { User } from '../../database.js'
 

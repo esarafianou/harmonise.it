@@ -14,28 +14,28 @@ module.exports = {
           loader: 'babel-loader'
         }
       },
-	  {
-		test: /\.css$/,
-		loader: 'style-loader!css-loader'
-	  },
-	  {
-		test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-	    loader: 'url-loader?limit=100000'
-	  }
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader'
+      },
+      {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader?limit=100000'
+      }
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({ hash: true, title: 'Harmonise.it' }),
+    new HtmlWebpackPlugin({ hash: true, title: 'Harmonise.it' })
   ],
   devServer: {
     historyApiFallback: true,
-	port: 3000,
+    port: 3000,
     proxy: {
-	  '/api': `http://localhost:${PORT}`
-	},
+      '/api': `http://localhost:${PORT}`
+    },
     stats: {
-	  colors: true
-	}
+      colors: true
+    }
   },
   output: {
     publicPath: '/',
