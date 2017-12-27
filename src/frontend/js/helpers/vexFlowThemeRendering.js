@@ -1,3 +1,5 @@
+import { Flow as VF } from 'vexflow'
+
 let romanNumerals = {
   1: 'I',
   2: 'II',
@@ -102,8 +104,6 @@ let addNotesToStave = (i, voice, iterator, barCompleted, numBeats, beatValue) =>
   return {iterator: iterator,
     notesArray: notesArray}
 }
-
-let VF = Vex.Flow
 
 export default function renderTheme (element, musicPiece) {
   if (typeof (window.leak) === 'undefined') {

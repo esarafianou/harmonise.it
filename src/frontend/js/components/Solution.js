@@ -4,7 +4,7 @@ import { List, ListItem } from 'material-ui'
 import SolutionData from './SolutionData'
 
 class Solution extends React.Component {
-  createSolutionDetails = (solution) => {
+  createSolutionDetails (solution) {
     console.log(solution)
     return (
       <List>

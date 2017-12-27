@@ -3,7 +3,7 @@ import { graphql, createFragmentContainer } from 'react-relay'
 import renderTheme from '../helpers/vexFlowThemeRendering'
 
 class ThemeData extends React.Component {
-  _renderTheme = (element, themeInfo) => {
+  _renderTheme (element, themeInfo) {
     return renderTheme(element, JSON.parse(themeInfo))
   }
 
@@ -13,7 +13,7 @@ class ThemeData extends React.Component {
 
   render () {
     return (
-      <div ref={el => this.el = el} />
+      <div ref={el => { this.el = el }} />
     )
   }
 }

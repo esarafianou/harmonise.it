@@ -4,7 +4,7 @@ import renderSolution from '../helpers/vexFlowSolutionRendering'
 import { constructThemeSolutionData } from '../helpers/constructThemeSolutionData'
 
 class SolutionData extends React.Component {
-  _renderSolution = (element, solutionInfo) => {
+  _renderSolution (element, solutionInfo) {
     return renderSolution(element, solutionInfo)
   }
 
@@ -15,7 +15,7 @@ class SolutionData extends React.Component {
 
   render () {
     return (
-      <div ref={el => this.el = el} />
+      <div ref={el => { this.el = el }} />
     )
   }
 }

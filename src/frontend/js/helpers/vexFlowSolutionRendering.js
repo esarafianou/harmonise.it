@@ -1,3 +1,5 @@
+import { Flow as VF } from 'vexflow'
+
 let romanNumerals = {
   1: 'I',
   2: 'II',
@@ -118,8 +120,6 @@ let makeSystem = (factory, width, x, y, i, factoryWidth, changeLine) => {
     y: y,
     changeLine: changeLine}
 }
-
-let VF = Vex.Flow
 
 export default function renderMusicPiece (element, musicPiece) {
   if (typeof (window.leak) === 'undefined') {

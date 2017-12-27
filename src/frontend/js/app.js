@@ -11,13 +11,14 @@ import 'isomorphic-fetch'
 import { routeConfig } from './routes'
 import '../css/style.css'
 
-const mountNode = document.getElementById('boo')
+const mountNode = document.createElement('div')
+document.body.appendChild(mountNode)
 
 function fetchQuery (
   operation,
   variables
 ) {
-  return fetch('/api', {
+  return window.fetch('/api', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

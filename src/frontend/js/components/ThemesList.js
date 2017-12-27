@@ -9,7 +9,7 @@ class ThemesList extends React.Component {
     createSolutionMutation.commit(this.props, theme)
   }
 
-  createthemesList = (themes) => {
+  createthemesList (themes) {
     return themes.map((theme, i) => {
       return (
         <ListItem key={i}>
@@ -31,9 +31,9 @@ class ThemesList extends React.Component {
           <h1> Themes </h1>
         </header>
         <div> Choose a theme and start solving its music harmony </div>
-          <List>
-            { this.createthemesList(this.props.themes) }
-          </List>
+        <List>
+          { this.createthemesList(this.props.themes) }
+        </List>
       </div>
     )
   }
