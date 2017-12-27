@@ -156,7 +156,7 @@ export default function renderTheme (element, musicPiece) {
     }
     stave.setContext(context).draw()
 
-    let formatter = new VF.Formatter().joinVoices([voice]).format([voice], barWidth)
+    new VF.Formatter().joinVoices([voice]).format([voice], barWidth)
     voice.draw(context, stave)
   }
 }
