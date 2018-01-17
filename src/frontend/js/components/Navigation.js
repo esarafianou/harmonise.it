@@ -13,6 +13,7 @@ export default class Navigation extends React.Component {
             <li><Link to='/'>Themes</Link></li>
             <li><Link to='/solutions'>My Solutions</Link></li>
             <li><Link to='/register'>Register</Link></li>
+            <li><Link to='/login'>Login</Link></li>
           </ul>
         </div>
       </nav>

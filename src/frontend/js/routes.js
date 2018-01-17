@@ -9,6 +9,7 @@ import ThemesList from './components/ThemesList'
 import SolutionsList from './components/SolutionsList'
 import Solution from './components/Solution'
 import Register from './components/Register'
+import Login from './components/Login'
 
 const ThemesListQuery = graphql`
   query routes_ThemesList_Query {
@@ -56,6 +57,10 @@ export const routeConfig = makeRouteConfig(
     <Route
       path='/register'
       Component={Register}
+    />
+    <Route
+      path='/login'
+      Component={Login}
     />
   </Route>
 )
