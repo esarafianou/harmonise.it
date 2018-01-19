@@ -1,0 +1,6 @@
+language: javascript
+sudo: true
+install:
+    - npm install
+script:
+    - npm run lint

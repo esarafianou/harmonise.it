@@ -7,7 +7,7 @@
     "start": "babel-node ./src/server.js",
     "database_data": "babel-node ./src/testing_data.js",
     "devserver": "webpack-dev-server --config webpack.dev.js",
-    "lint": "standard",
+    "lint": "standard & markdownlint README.md",
     "relay": "babel-node scripts/updateSchema.js && relay-compiler --src ./src/frontend/js --schema ./src/api/schema.graphql",
     "build": "npm run relay && webpack"
   },
@@ -53,6 +53,7 @@
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.6",
     "html-webpack-plugin": "^2.30.1",
+    "markdownlint-cli": "^0.6.0",
     "relay-compiler": "^1.1.0",
     "standard": "^10.0.2",
     "style-loader": "^0.19.1",
