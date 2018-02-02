@@ -1,22 +1,61 @@
 import React from 'react'
 import { Link } from 'found'
+import { AppBar, Toolbar, Typography } from 'material-ui'
+import { withStyles } from 'material-ui/styles'
 
-export default class Navigation extends React.Component {
+const styles = {
+  root: {
+    width: '100%'
+  },
+  flex: {
+    flex: 1,
+    color: 'white'
+  },
+  divide: {
+    marginLeft: 50,
+    color: 'white'
+  },
+  userLinks: {
+    marginLeft: 15,
+    color: 'white'
+  },
+  fontColor: {
+    color: 'white'
+  }
+}
+
+class Navigation extends React.Component {
   render () {
+    const { classes } = this.props
+
     return (
-      <nav className='navbar navbar-default'>
-        <div className='container-fluid'>
-          <div className='navbar-header'>
-            <Link to='/' className='navbar-brand'>Harmonise.it</Link>
-          </div>
-          <ul className='nav navbar-nav'>
-            <li><Link to='/'>Themes</Link></li>
-            <li><Link to='/solutions'>My Solutions</Link></li>
-            <li><Link to='/register'>Register</Link></li>
-            <li><Link to='/login'>Login</Link></li>
-          </ul>
-        </div>
-      </nav>
+      <AppBar position='static'>
+        <Toolbar className={classes.fontColor}>
+          <Typography type='title' className={classes.flex}>
+            <Link to='/' className={classes.fontColor}>
+              harmonise.it
+            </Link>
+            <Link to='/' className={classes.divide}>
+              Themes
+            </Link>
+            <Link to='/solutions' className={classes.userLinks}>
+              My Solutions
+            </Link>
+          </Typography>
+          <Link to='/register'>
+            <Typography type='title' className={classes.flex}>
+              Register
+            </Typography>
+          </Link>
+          <Link to='/login' className={classes.userLinks}>
+            <Typography type='title' className={classes.flex}>
+              Login
+            </Typography>
+          </Link>
+        </Toolbar>
+      </AppBar>
     )
   }
 }
+
+export default withStyles(styles)(Navigation)
