@@ -2,7 +2,6 @@ import makeRouteConfig from 'found/lib/makeRouteConfig'
 import Route from 'found/lib/Route'
 import React from 'react'
 import { graphql } from 'react-relay'
-import '../../../node_modules/bootstrap/dist/css/bootstrap.css'
 
 import Layout from './components/Layout'
 import ThemesList from './components/ThemesList'
@@ -43,12 +42,12 @@ export const routeConfig = makeRouteConfig(
     <Route
       Component={ThemesList}
       query={ThemesListQuery}
-    />,
+    />
     <Route
       path='/solutions'
       Component={SolutionsList}
       query={SolutionsListQuery}
-    />,
+    />
     <Route
       path='/solutions/:solutionId'
       Component={Solution}

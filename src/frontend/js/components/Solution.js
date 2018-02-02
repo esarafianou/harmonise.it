@@ -5,7 +5,6 @@ import SolutionData from './SolutionData'
 
 class Solution extends React.Component {
   createSolutionDetails (solution) {
-    console.log(solution)
     return (
       <List>
         <ListItem> Given voice: {solution.theme.given_voice} </ListItem>

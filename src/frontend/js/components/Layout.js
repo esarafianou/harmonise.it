@@ -1,6 +1,5 @@
 import React from 'react'
 import Navigation from '../components/Navigation'
-import Footer from '../components/Footer'
 
 export default class Layout extends React.Component {
   render () {
@@ -10,7 +9,6 @@ export default class Layout extends React.Component {
         <section className='container-fluid'>
           {this.props.children}
         </section>
-        <Footer />
       </div>
     )
   }

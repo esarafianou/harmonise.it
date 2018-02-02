@@ -1,14 +1,44 @@
 import React from 'react'
-import { Form } from 'react-bootstrap'
-import { RaisedButton } from 'material-ui'
+import { Button, Grid, Paper, TextField } from 'material-ui'
+import { withStyles } from 'material-ui/styles'
 import registerUserMutation from './registerUserMutation'
 
-export default class Register extends React.Component {
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    marginTop: 30
+  },
+  paper: {
+    padding: 16,
+    justify: 'center',
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    width: 350
+  },
+  textField: {
+    justify: 'center',
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200
+  },
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  }
+})
+
+class Register extends React.Component {
   constructor () {
     super()
     this.state = {
+      username: '',
+      password: '',
+      confirmPassword: '',
       passwordsNotMatch: false
     }
+    this.handleUsername = this.handleUsername.bind(this)
+    this.handlePassword = this.handlePassword.bind(this)
+    this.handleConfirmPassword = this.handleConfirmPassword.bind(this)
   }
 
   showPasswordsNotMatch () {
@@ -17,51 +47,82 @@ export default class Register extends React.Component {
     )
   }
 
+  handleUsername (event) {
+    this.setState({
+      username: event.target.value
+    })
+  }
+
+  handlePassword (event) {
+    this.setState({
+      password: event.target.value
+    })
+  }
+
+  handleConfirmPassword (event) {
+    console.log('confirm')
+    this.setState({
+      confirmPassword: event.target.value
+    })
+  }
+
   handleSubmit (event) {
-    let username = this.refs.username.value
-    let password = this.refs.password.value
-    let confirmPassword = this.refs.confirmpassword.value
+    event.preventDefault()
+    let username = this.state.username
+    let password = this.state.password
+    let confirmPassword = this.state.confirmPassword
     if (password === confirmPassword) {
       registerUserMutation.commit(this.props, username, password, confirmPassword)
     } else {
       this.setState({ passwordsNotMatch: true })
-      this.refs.password.value = ''
-      this.refs.confirmpassword.value = ''
+      this.state.password.value = ''
+      this.state.confirmpassword.value = ''
     }
   }
 
   render () {
+    const {classes} = this.props
     return (
       <div>
         { this.state.passwordsNotMatch ? this.showPasswordsNotMatch() : null }
-        <div className='row'>
-          <div className='col-xs-offset-4 col-xs-5'>
-            <Form onSubmit={this.handleSubmit}>
-              <div className='form-group'>
-                <label htmlFor='username' className='col-xs-5'>Username:</label>
-                <div className='col-xs-5 progressmargin'>
-                  <input type='text' className='form-control' ref='username' />
-                </div>
-              </div>
-              <div className='form-group'>
-                <label htmlFor='password' className='col-xs-5'>Password: </label>
-                <div className='col-xs-5'>
-                  <input type='password' className='form-control' ref='password' />
-                </div>
-              </div>
-              <div className='form-group'>
-                <label htmlFor='confirmpassword' className='col-xs-5'>Confirm Password: </label>
-                <div className='col-xs-5'>
-                  <input type='password' className='form-control' ref='confirmpassword' />
-                </div>
-              </div>
-            </Form>
-          </div>
-          <RaisedButton type='submit' className='btn btn-default col-lg-offset-7' value='Submit'
-            onClick={(event) => this.handleSubmit(event)}> Register
-          </RaisedButton>
-        </div>
+        <Grid justify='center' spacing={24} container className={classes.root}>
+          <Paper className={classes.paper}>
+            <form onSubmit={this.handleSubmit} className={classes.container}>
+              <TextField
+                id='.username'
+                label='Username'
+                className={classes.textField}
+                value={this.state.username}
+                onChange={this.handleUsername}
+                margin='normal'
+              />
+              <TextField
+                id='password'
+                label='Password'
+                className={classes.textField}
+                type='password'
+                value={this.state.password}
+                onChange={this.handlePassword}
+                margin='normal'
+              />
+              <TextField
+                id='confirmPassword'
+                label='Confirm Password'
+                className={classes.textField}
+                type='password'
+                value={this.state.confirmPassword}
+                onChange={this.handleConfirmPassword}
+                margin='normal'
+              />
+            </form>
+            <Button raised type='submit' value='Submit'
+              onClick={(event) => { this.handleSubmit(event) }}>Register
+            </Button>
+          </Paper>
+        </Grid>
       </div>
     )
   }
 }
+
+export default withStyles(styles)(Register)
