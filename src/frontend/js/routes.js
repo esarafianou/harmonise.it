@@ -43,12 +43,12 @@ export const routeConfig = makeRouteConfig(
     <Route
       Component={ThemesList}
       query={ThemesListQuery}
-    />,
+    />
     <Route
       path='/solutions'
       Component={SolutionsList}
       query={SolutionsListQuery}
-    />,
+    />
     <Route
       path='/solutions/:solutionId'
       Component={Solution}
