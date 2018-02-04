@@ -3,7 +3,7 @@ harmonise.it
 
 > Practice music theory harmony rules
 
-harmonise.it is a platform which which helps music theory and harmony students
+harmonise.it is a platform which helps music theory and harmony students
 practice harmony rules. Based on a theme with a given soprano or bass voice,
 users can complete the rest of the voices and create a music piece with four voices
 (soprano, alto, tenoro, bass) that comply with the music harmony rules.
@@ -16,7 +16,7 @@ review their completed music pieces.
 _This project is under development. harmonise.it is not live yet._
 
 [![Travis](https://img.shields.io/travis/esarafianou/harmonise.it.svg)
-](https://travis-ci.org/esarafianou/harmonise.it/branches) )
+](https://travis-ci.org/esarafianou/harmonise.it/branches)
 [![Dependency
 status](https://img.shields.io/david/esarafianou/harmonise.it.svg)](https://david-dm.org/esarafianou/harmonise.it?style=plastic)
 
