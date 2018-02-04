@@ -21,14 +21,14 @@ class ThemesList extends React.Component {
   createthemesList (themes) {
     return themes.map((theme, i) => {
       return (
-        <div>
+        <div key={i}>
           <Divider />
-          <ListItem key={i}>
+          <ListItem>
             <List>
-              <ListItem> Given voice: {theme.given_voice} </ListItem>
-              <ListItem> {theme.description} </ListItem>
-              <ListItem> <ThemeData theme={theme} /> </ListItem>
-              <Button raised onClick={() => { this.createSolution(theme) }}>Solve it! </Button>
+              <ListItem key='1'> Given voice: {theme.given_voice} </ListItem>
+              <ListItem key='2'> {theme.description} </ListItem>
+              <ListItem key='3'> <ThemeData theme={theme} /> </ListItem>
+              <Button raised key='4' onClick={() => { this.createSolution(theme) }}>Solve it! </Button>
             </List>
           </ListItem>
         </div>
