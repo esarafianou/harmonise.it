@@ -5,7 +5,8 @@ import { withStyles } from 'material-ui/styles'
 
 const styles = {
   root: {
-    width: '100%'
+    width: '100%',
+    margin: -8,
   },
   flex: {
     flex: 1,
@@ -29,7 +30,7 @@ class Navigation extends React.Component {
     const { classes } = this.props
 
     return (
-      <AppBar position='static'>
+      <AppBar position='static' className={classes.root}>
         <Toolbar className={classes.fontColor}>
           <Typography type='title' className={classes.flex}>
             <Link to='/' className={classes.fontColor}>
