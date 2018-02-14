@@ -32,8 +32,8 @@ class Login extends React.Component {
       username: '',
       password: ''
     }
-    this.handleUsername = this.handleUsername.bind(this);
-    this.handlePassword = this.handlePassword.bind(this);
+    this.handleUsername = this.handleUsername.bind(this)
+    this.handlePassword = this.handlePassword.bind(this)
   }
 
   handleUsername (event) {

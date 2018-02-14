@@ -5,7 +5,7 @@ import { withStyles } from 'material-ui/styles'
 
 const styles = {
   root: {
-    width: '100%',
+    width: '100%'
   },
   flex: {
     flex: 1,
