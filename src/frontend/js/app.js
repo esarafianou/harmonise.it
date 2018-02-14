@@ -10,6 +10,10 @@ import 'isomorphic-fetch'
 import { routeConfig } from './routes'
 import '../css/style.css'
 
+document.body.style.padding = 0
+document.body.style.margin= 0
+document.body.style.fontFamily = 'sans-serif'
+
 const mountNode = document.createElement('div')
 document.body.appendChild(mountNode)
 
@@ -18,6 +22,7 @@ function fetchQuery (
   variables
 ) {
   return window.fetch('/api', {
+    credentials: 'same-origin',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
