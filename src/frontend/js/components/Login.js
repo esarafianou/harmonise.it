@@ -79,7 +79,7 @@ class Login extends React.Component {
         <Paper className={classes.paper}>
           <form onSubmit={this.handleSubmit} className={classes.container}>
             <TextField
-              id='.username'
+              id='username'
               label='Username'
               className={classes.textField}
               value={this.state.username}
