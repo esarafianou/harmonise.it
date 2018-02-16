@@ -1,4 +1,5 @@
 import { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLList } from 'graphql'
+import { fromGlobalId } from 'graphql-relay'
 import { userType } from './userType'
 import { solutionType } from './solutionType'
 import { themeType } from './themeType'
@@ -46,7 +47,13 @@ export const queryType = new GraphQLObjectType({
         if (typeof ctx.user === 'undefined') {
           console.log('You should be logged in')
         } else {
-          return acl.Solution.getSolution(ctx.user.id, args.id)
+          const { id } = fromGlobalId(args.id)
+          const opts = {
+            where: {
+              id: id
+            }
+          }
+          return acl.Solution.getSolution(ctx.user, opts)
         }
       }
     },
@@ -56,7 +63,7 @@ export const queryType = new GraphQLObjectType({
         if (typeof ctx.user === 'undefined') {
           console.log('You should be logged in')
         } else {
-          return acl.Solution.getSolutions(ctx.user.id)
+          return acl.Solution.getSolutions(ctx.user)
         }
       }
     }
