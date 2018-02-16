@@ -42,6 +42,16 @@ const ThemeSolution = Connection.define('theme_solution', {
     type: Sequelize.TEXT,
     allowNull: false
   }
+}, {
+  scopes: {
+    authorized: function (value) {
+      return {
+        where: {
+          userId: value
+        }
+      }
+    }
+  }
 })
 
 User.Solutions = User.hasMany(ThemeSolution)
