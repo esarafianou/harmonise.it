@@ -9,7 +9,7 @@ class SolutionsList extends React.Component {
       return (
         <ListItem key={i}>
           <List>
-            <ListItem>Given voice: {solution.theme.given_voice} </ListItem>
+            <ListItem>Given voice: {solution.theme.given_voice}</ListItem>
             <ListItem>
               <SolutionData solution={solution} themeData={solution.theme.theme_data} givenVoice={solution.theme.given_voice} />
             </ListItem>

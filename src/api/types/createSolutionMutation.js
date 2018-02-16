@@ -1,7 +1,7 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql'
 import { mutationWithClientMutationId, fromGlobalId } from 'graphql-relay'
 import { solutionType } from './solutionType'
-import { User, Theme, ThemeSolution } from '../../database.js'
+import { Theme, ThemeSolution } from '../../database.js'
 
 const _createSolutionData = (theme) => {
   let voices = []
@@ -38,26 +38,19 @@ export const createSolutionMutation = mutationWithClientMutationId({
       }
     }
   },
-  mutateAndGetPayload: ({ themeId }) => {
-    return User.find({
+  mutateAndGetPayload: ({ themeId }, { user }) => {
+    const { id } = fromGlobalId(themeId)
+    return Theme.find({
       where: {
-        id: 1
+        id: id
       }
     })
-    .then((user) => {
-      const { id } = fromGlobalId(themeId)
-      return Theme.find({
-        where: {
-          id: id
-        }
-      })
-      .then((theme) => {
-        let solutionData = _createSolutionData(theme)
-        return ThemeSolution.create({
-          userId: user.id,
-          themeId: theme.id,
-          solution_data: solutionData
-        })
+    .then((theme) => {
+      let solutionData = _createSolutionData(theme)
+      return ThemeSolution.create({
+        userId: user.id,
+        themeId: theme.id,
+        solution_data: solutionData
       })
     })
   }

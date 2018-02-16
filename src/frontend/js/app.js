@@ -6,10 +6,13 @@ import queryMiddleware from 'farce/lib/queryMiddleware'
 import createRender from 'found/lib/createRender'
 import { Environment, Network, RecordSource, Store } from 'relay-runtime'
 import { Resolver } from 'found-relay'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import 'isomorphic-fetch'
 import { routeConfig } from './routes'
 import '../css/style.css'
+
+document.body.style.padding = 0
+document.body.style.margin = 0
+document.body.style.fontFamily = 'sans-serif'
 
 const mountNode = document.createElement('div')
 document.body.appendChild(mountNode)
@@ -19,6 +22,7 @@ function fetchQuery (
   variables
 ) {
   return window.fetch('/api', {
+    credentials: 'same-origin',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -49,8 +53,6 @@ const Router = createFarceRouter({
 })
 
 ReactDOM.render(
-  <MuiThemeProvider>
-    <Router resolver={resolver} />
-  </MuiThemeProvider>,
+  <Router resolver={resolver} />,
   mountNode
 )

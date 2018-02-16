@@ -1,10 +1,12 @@
 import { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLList } from 'graphql'
+import { fromGlobalId } from 'graphql-relay'
 import { userType } from './userType'
 import { solutionType } from './solutionType'
 import { themeType } from './themeType'
-import { User, Theme, ThemeSolution } from '../../database'
+import { User, Theme } from '../../database'
 import { resolver } from '../utils'
 import { nodeField } from '../sequelizeIntegration'
+import { acl } from '../accessControl'
 
 export const queryType = new GraphQLObjectType({
   name: 'Query',
@@ -41,12 +43,28 @@ export const queryType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: resolver(ThemeSolution)
+      resolve: (obj, args, ctx) => {
+        if (typeof ctx.user === 'undefined') {
+          console.log('You should be logged in')
+        } else {
+          const { id } = fromGlobalId(args.id)
+          const opts = {
+            where: {
+              id: id
+            }
+          }
+          return acl.Solution.getSolution(ctx.user, opts)
+        }
+      }
     },
     solutions: {
       type: new GraphQLList(solutionType),
-      resolve: (obj, args) => {
-        return ThemeSolution.findAll()
+      resolve: (obj, args, ctx) => {
+        if (typeof ctx.user === 'undefined') {
+          console.log('You should be logged in')
+        } else {
+          return acl.Solution.getSolutions(ctx.user)
+        }
       }
     }
   })

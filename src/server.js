@@ -9,7 +9,6 @@ import './auth'
 const app = express()
 const graphqlHttpConfig = (schema) => ({ schema, pretty: true, graphiql: true })
 
-app.use(require('cookie-parser')())
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }))
 app.use(passport.initialize())
 app.use(passport.session())
