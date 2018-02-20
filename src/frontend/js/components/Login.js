@@ -62,6 +62,7 @@ class Login extends React.Component {
     .then((response) => {
       if (response.status === 200) {
         this.props.router.push('/')
+        this.props.handleLogin(response.data.username)
       } else {
         console.log('Invalid username or password')
       }

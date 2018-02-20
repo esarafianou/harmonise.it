@@ -32,17 +32,24 @@ class Navigation extends React.Component {
   constructor () {
     super()
     this.createNavBar = this.createNavBar.bind(this)
-    this.state = { loggedIn: false }
+    this.state = {
+      loggedIn: false,
+      username: null
+    }
   }
 
-  componentDidMount () {
+  componentWillMount () {
     if (this.props.user !== null) {
-      this.setState({ loggedIn: true })
+      this.setState({
+        loggedIn: true,
+        username: this.props.user.username
+      })
     }
   }
 
   createNavBar () {
     const { classes } = this.props
+    let username = this.props.username || this.state.username
     return (
       <AppBar position='static' className={classes.root}>
         <Toolbar className={classes.fontColor}>
@@ -53,21 +60,21 @@ class Navigation extends React.Component {
             <Link to='/' className={classes.divide}>
               Themes
             </Link>
-            { this.state.loggedIn
+            { this.state.loggedIn || this.props.loggedIn
             ? <Link to='/solutions' className={classes.userLinks}>
                 My Solutions
               </Link>
             : null }
           </Typography>
-          { this.state.loggedIn
+          { this.state.loggedIn || this.props.loggedIn
           ? <Typography type='title' className={classes.userLinks}>
-            Hi, { this.props.user.username }
+            Hi, { username }
           </Typography>
           : <Typography type='title' className={classes.userLinks}>
             <Link to='/register' className={classes.userLinks}>
                 Register
             </Link>
-            <Link to='/login' className={classes.userLinks} onChange={this.onLogin}>
+            <Link to='/login' className={classes.userLinks}>
                 Login
             </Link>
           </Typography>

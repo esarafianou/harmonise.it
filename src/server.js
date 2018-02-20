@@ -16,7 +16,7 @@ app.use(passport.session())
 // login route for passport
 app.post('/api/login', bodyParser.urlencoded({ extended: true }), bodyParser.json(), passport.authenticate('local'),
   function (req, res) {
-    res.json({})
+    res.json({username: req.user.username})
   }
 )
 
