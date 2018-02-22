@@ -20,6 +20,14 @@ app.post('/api/login', bodyParser.urlencoded({ extended: true }), bodyParser.jso
   }
 )
 
+// logout route for passport
+app.get('/api/logout',
+  function (req, res) {
+    req.logout()
+    res.json({})
+  }
+)
+
 app.use('/api', graphQLHTTP(graphqlHttpConfig(schema)))
 
 app.use(express.static(pathModule.join(__dirname, '../dist')))
