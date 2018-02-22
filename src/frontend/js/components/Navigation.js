@@ -1,7 +1,7 @@
 import React from 'react'
-import { graphql, createFragmentContainer } from 'react-relay'
+import axios from 'axios'
 import { Link } from 'found'
-import { AppBar, Toolbar, Typography } from 'material-ui'
+import { AppBar, Toolbar, Typography, Button } from 'material-ui'
 import { withStyles } from 'material-ui/styles'
 
 const styles = {
@@ -32,24 +32,27 @@ class Navigation extends React.Component {
   constructor () {
     super()
     this.createNavBar = this.createNavBar.bind(this)
-    this.state = {
-      loggedIn: false,
-      username: null
-    }
+    this.logout = this.logout.bind(this)
   }
 
-  componentWillMount () {
-    if (this.props.user !== null) {
-      this.setState({
-        loggedIn: true,
-        username: this.props.user.username
-      })
-    }
+  logout () {
+    axios.get('/api/logout')
+    .then((response) => {
+      if (response.status === 200) {
+        this.props.handleLogout()
+        this.props.router.push('/')
+      } else {
+        window.alert('Something went wrong. Please retry')
+      }
+    })
+    .catch(error => {
+      console.log(error)
+    })
   }
 
   createNavBar () {
     const { classes } = this.props
-    let username = this.props.username || this.state.username
+
     return (
       <AppBar position='static' className={classes.root}>
         <Toolbar className={classes.fontColor}>
@@ -60,15 +63,18 @@ class Navigation extends React.Component {
             <Link to='/' className={classes.divide}>
               Themes
             </Link>
-            { this.state.loggedIn || this.props.loggedIn
+            { this.props.loggedIn
             ? <Link to='/solutions' className={classes.userLinks}>
                 My Solutions
               </Link>
             : null }
           </Typography>
-          { this.state.loggedIn || this.props.loggedIn
+          { this.props.loggedIn
           ? <Typography type='title' className={classes.userLinks}>
-            Hi, { username }
+            Hi, {this.props.username}
+            <Button className={classes.userLinks} onClick={this.logout}>
+                Logout
+            </Button>
           </Typography>
           : <Typography type='title' className={classes.userLinks}>
             <Link to='/register' className={classes.userLinks}>
@@ -93,11 +99,4 @@ class Navigation extends React.Component {
   }
 }
 
-export default createFragmentContainer(withStyles(styles)(Navigation),
-  graphql`
-    fragment Navigation_user on User {
-      id,
-      username
-    }
-  `
-)
+export default withStyles(styles)(Navigation)

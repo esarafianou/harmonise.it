@@ -10,6 +10,7 @@ class Layout extends React.Component {
       username: null
     }
     this.handleLogin = this.handleLogin.bind(this)
+    this.handleLogout = this.handleLogout.bind(this)
   }
 
   handleLogin (username) {
@@ -19,12 +20,28 @@ class Layout extends React.Component {
     })
   }
 
+  handleLogout () {
+    this.setState({
+      loggedIn: false,
+      username: null
+    })
+  }
+
   render () {
+    let username, loggedIn
+    if (this.props.me) {
+      username = this.props.me.username
+      loggedIn = true
+    } else {
+      username = this.state.username
+      loggedIn = this.state.loggedIn
+    }
+
     return (
       <div>
-        <Navigation user={this.props.me} username={this.state.username} loggedIn={this.state.loggedIn} />
+        <Navigation username={username} loggedIn={loggedIn} handleLogout={this.handleLogout} />
         <section>
-          {React.cloneElement(this.props.children, { loggedIn: this.state.loggedIn, handleLogin: this.handleLogin })}
+          {React.cloneElement(this.props.children, { loggedIn: loggedIn, handleLogin: this.handleLogin })}
         </section>
       </div>
     )
@@ -34,7 +51,8 @@ class Layout extends React.Component {
 export default createFragmentContainer(Layout,
   graphql`
     fragment Layout_me on User {
-      ...Navigation_user
+      id,
+      username
     }
   `
 )
