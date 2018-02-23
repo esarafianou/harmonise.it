@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Grid, Paper, TextField } from 'material-ui'
+import { Link } from 'found'
+import { Button, Grid, Paper, TextField, Typography } from 'material-ui'
 import { withStyles } from 'material-ui/styles'
 import axios from 'axios'
 
@@ -110,6 +111,12 @@ class Login extends React.Component {
           <Button raised className={classes.button} type='submit' value='Submit'
             onClick={(event) => { this.handleSubmit(event) }}> Login
           </Button>
+          <Typography className={classes.text}>
+            Haven't got an account? {' '}
+            <Link to='/register'>
+               Register now!
+            </Link>
+          </Typography>
         </Paper>
       </Grid>
     )
