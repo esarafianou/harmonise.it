@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'found'
 import { graphql, createFragmentContainer } from 'react-relay'
 import { List, ListItem, Button, Divider } from 'material-ui'
 import { withStyles } from 'material-ui/styles'
@@ -28,7 +29,10 @@ class ThemesList extends React.Component {
               <ListItem key='1'>Given voice: {theme.given_voice}</ListItem>
               <ListItem key='2'>{theme.description}</ListItem>
               <ListItem key='3'><ThemeData theme={theme} /></ListItem>
-              <Button raised key='4' onClick={() => { this.createSolution(theme) }}>Solve it!</Button>
+              {this.props.loggedIn
+              ? <Button raised key='4' onClick={() => { this.createSolution(theme) }}>Solve it!</Button>
+              : <Link to='/login' key='4'>Login to start solving!</Link>
+              }
             </List>
           </ListItem>
         </div>
