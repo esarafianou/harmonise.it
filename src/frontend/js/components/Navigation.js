@@ -36,7 +36,7 @@ class Navigation extends React.Component {
   }
 
   logout () {
-    axios.get('/api/logout')
+    axios.post('/api/logout')
     .then((response) => {
       if (response.status === 200) {
         this.props.handleLogout()

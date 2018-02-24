@@ -21,7 +21,7 @@ app.post('/api/login', bodyParser.urlencoded({ extended: true }), bodyParser.jso
 )
 
 // logout route for passport
-app.get('/api/logout',
+app.post('/api/logout',
   function (req, res) {
     req.logout()
     res.json({})
