@@ -112,7 +112,7 @@ class Login extends React.Component {
             onClick={(event) => { this.handleSubmit(event) }}> Login
           </Button>
           <Typography className={classes.text}>
-            Haven't got an account? {' '}
+            New to harmonise.it? {' '}
             <Link to='/register'>
                Register now!
             </Link>
