@@ -1,30 +1,20 @@
 import React from 'react'
-import { graphql, createFragmentContainer } from 'react-relay'
+import { graphql, createRefetchContainer } from 'react-relay'
 import Navigation from '../components/Navigation'
 
 class Layout extends React.Component {
   constructor () {
     super()
-    this.state = {
-      loggedIn: false,
-      username: null
-    }
     this.handleLogin = this.handleLogin.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
   }
 
   handleLogin (username) {
-    this.setState({
-      loggedIn: true,
-      username: username
-    })
+    this.props.relay.refetch()
   }
 
   handleLogout () {
-    this.setState({
-      loggedIn: false,
-      username: null
-    })
+    this.props.relay.refetch()
   }
 
   render () {
@@ -33,8 +23,8 @@ class Layout extends React.Component {
       username = this.props.me.username
       loggedIn = true
     } else {
-      username = this.state.username
-      loggedIn = this.state.loggedIn
+      username = null
+      loggedIn = false
     }
 
     return (
@@ -48,11 +38,18 @@ class Layout extends React.Component {
   }
 }
 
-export default createFragmentContainer(Layout,
+export default createRefetchContainer(Layout,
   graphql`
     fragment Layout_me on User {
       id,
       username
+    }
+  `,
+  graphql`
+    query LayoutRefetchQuery {
+      me {
+        ...Layout_me
+      }
     }
   `
 )
