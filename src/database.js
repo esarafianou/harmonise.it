@@ -1,21 +1,10 @@
 import { Sequelize } from 'sequelize'
 
-const setDatabase = () => {
-  let database
-  if (process.env.DATABASE_URL) {
-    database = process.env.DATABASE_URL
-  } else {
-    database = 'postgres://postgres:postgres@localhost/postgres'
-  }
-  return database
-}
+const database = process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost/postgres'
 
 const Connection = new Sequelize(
-  setDatabase(),
-  {
-    dialect: 'postgres',
-    operatorsAliases: false
-  }
+  database,
+  { operatorsAliases: false }
 
 )
 

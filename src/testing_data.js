@@ -74,8 +74,12 @@ Connection.sync({ force: true }).then(() => {
         theme_data: JSON.stringify(themeData)
       })
     })
+    .then(() => {
+      Connection.close()
+    })
   })
   .catch((error) => {
     console.log(error)
+    Connection.close()
   })
 })
