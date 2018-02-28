@@ -10,6 +10,14 @@ import Solution from './components/Solution'
 import Register from './components/Register'
 import Login from './components/Login'
 
+const LayoutQuery = graphql`
+  query routes_Layout_Query {
+    me {
+      ...Layout_me
+    }
+  }
+`
+
 const ThemesListQuery = graphql`
   query routes_ThemesList_Query {
     themes{
@@ -38,6 +46,7 @@ export const routeConfig = makeRouteConfig(
   <Route
     path='/'
     Component={Layout}
+    query={LayoutQuery}
   >
     <Route
       Component={ThemesList}

@@ -1,17 +1,18 @@
 import React from 'react'
-import { Button, Grid, Paper, TextField } from 'material-ui'
+import { Link } from 'found'
+import { Button, Grid, Paper, TextField, Typography } from 'material-ui'
 import { withStyles } from 'material-ui/styles'
 import axios from 'axios'
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    marginTop: 30
+    marginTop: 50
   },
   paper: {
     padding: 16,
     color: theme.palette.text.secondary,
-    width: 350
+    width: 300
   },
   textField: {
     justify: 'center',
@@ -20,8 +21,18 @@ const styles = theme => ({
     width: 200
   },
   container: {
-    display: 'flex',
-    flexWrap: 'wrap'
+    margin: 'auto',
+    width: 230
+  },
+  button: {
+    marginTop: 20,
+    clear: 'both',
+    float: 'right'
+  },
+  text: {
+    paddingTop: 20,
+    clear: 'both',
+    textAlign: 'center'
   }
 })
 
@@ -62,6 +73,7 @@ class Login extends React.Component {
     .then((response) => {
       if (response.status === 200) {
         this.props.router.push('/')
+        this.props.handleLogin(response.data.username)
       } else {
         console.log('Invalid username or password')
       }
@@ -96,9 +108,15 @@ class Login extends React.Component {
               margin='normal'
             />
           </form>
-          <Button raised type='submit' value='Submit'
+          <Button raised className={classes.button} type='submit' value='Submit'
             onClick={(event) => { this.handleSubmit(event) }}> Login
           </Button>
+          <Typography className={classes.text}>
+            New to harmonise.it? {' '}
+            <Link to='/register'>
+               Register now!
+            </Link>
+          </Typography>
         </Paper>
       </Grid>
     )

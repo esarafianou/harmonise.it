@@ -66,6 +66,20 @@ export const queryType = new GraphQLObjectType({
           return acl.Solution.getSolutions(ctx.user)
         }
       }
+    },
+    me: {
+      type: userType,
+      resolve: (obj, args, ctx) => {
+        if (typeof ctx.user === 'undefined') {
+          throw new Error('You should be logged in')
+        } else {
+          return User.find({
+            where: {
+              id: ctx.user.id
+            }
+          })
+        }
+      }
     }
   })
 })

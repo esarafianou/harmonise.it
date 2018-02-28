@@ -13,7 +13,7 @@ const styles = theme => ({
     justify: 'center',
     textAlign: 'center',
     color: theme.palette.text.secondary,
-    width: 350
+    width: 300
   },
   textField: {
     justify: 'center',
@@ -22,8 +22,12 @@ const styles = theme => ({
     width: 200
   },
   container: {
-    display: 'flex',
-    flexWrap: 'wrap'
+    margin: 'auto',
+    width: 230
+  },
+  button: {
+    marginTop: 20,
+    float: 'right'
   }
 })
 
@@ -114,7 +118,7 @@ class Register extends React.Component {
                 margin='normal'
               />
             </form>
-            <Button raised type='submit' value='Submit'
+            <Button raised className={classes.button} type='submit' value='Submit'
               onClick={(event) => { this.handleSubmit(event) }}>Register
             </Button>
           </Paper>

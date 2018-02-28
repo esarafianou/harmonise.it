@@ -9,7 +9,8 @@
     "devserver": "webpack-dev-server --config webpack.dev.js",
     "lint": "standard && markdownlint README.md",
     "relay": "babel-node scripts/updateSchema.js && relay-compiler --src ./src/frontend/js --schema ./src/api/schema.graphql",
-    "build": "npm run relay && webpack"
+    "build": "npm run relay && webpack",
+    "postinstall": "npm run build && npm run database_data"
   },
   "author": "",
   "license": "ISC",
