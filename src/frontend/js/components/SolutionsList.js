@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'found'
 import { graphql, createFragmentContainer } from 'react-relay'
 import { List, ListItem } from 'material-ui'
 import SolutionData from './SolutionData'
@@ -6,6 +7,7 @@ import SolutionData from './SolutionData'
 class SolutionsList extends React.Component {
   createSolutionsList (solutions) {
     return solutions.map((solution, i) => {
+      let solutionLink = '/solutions/' + solution.id
       return (
         <ListItem key={i}>
           <List>
@@ -13,6 +15,7 @@ class SolutionsList extends React.Component {
             <ListItem>
               <SolutionData solution={solution} themeData={solution.theme.theme_data} givenVoice={solution.theme.given_voice} />
             </ListItem>
+            <Link to={solutionLink}>Continue editing</Link>
           </List>
         </ListItem>
       )

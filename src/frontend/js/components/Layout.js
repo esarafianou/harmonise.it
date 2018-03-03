@@ -29,7 +29,7 @@ class Layout extends React.Component {
 
     return (
       <div>
-        <Navigation username={username} loggedIn={loggedIn} handleLogout={this.handleLogout} />
+        <Navigation username={username} loggedIn={loggedIn} router={this.props.router} handleLogout={this.handleLogout} />
         <section>
           {React.cloneElement(this.props.children, { loggedIn: loggedIn, handleLogin: this.handleLogin })}
         </section>
