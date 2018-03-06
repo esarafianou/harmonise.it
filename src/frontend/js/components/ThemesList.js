@@ -11,6 +11,10 @@ const styles = theme => ({
     width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper
+  },
+  link: {
+    textDecoration: 'none',
+    color: 'blue'
   }
 })
 
@@ -31,7 +35,7 @@ class ThemesList extends React.Component {
               <ListItem key='3'><ThemeData theme={theme} /></ListItem>
               {this.props.loggedIn
               ? <Button raised key='4' onClick={() => { this.createSolution(theme) }}>Solve it!</Button>
-              : <Link to='/login' key='4'>Login to start solving!</Link>
+              : <Link to='/login' key='4' className={this.props.classes.link}>Login to start solving!</Link>
               }
             </List>
           </ListItem>

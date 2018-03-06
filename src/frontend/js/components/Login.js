@@ -33,6 +33,10 @@ const styles = theme => ({
     paddingTop: 20,
     clear: 'both',
     textAlign: 'center'
+  },
+  link: {
+    textDecoration: 'none',
+    color: 'blue'
   }
 })
 
@@ -113,7 +117,7 @@ class Login extends React.Component {
           </Button>
           <Typography className={classes.text}>
             New to harmonise.it? {' '}
-            <Link to='/register'>
+            <Link to='/register' className={classes.link}>
                Register now!
             </Link>
           </Typography>

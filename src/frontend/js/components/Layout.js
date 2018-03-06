@@ -1,6 +1,13 @@
 import React from 'react'
 import { graphql, createRefetchContainer } from 'react-relay'
+import { withStyles } from 'material-ui/styles'
 import Navigation from '../components/Navigation'
+
+const styles = theme => ({
+  root: {
+    marginLeft: 20
+  }
+})
 
 class Layout extends React.Component {
   constructor () {
@@ -30,7 +37,7 @@ class Layout extends React.Component {
     return (
       <div>
         <Navigation username={username} loggedIn={loggedIn} router={this.props.router} handleLogout={this.handleLogout} />
-        <section>
+        <section className={this.props.classes.root}>
           {React.cloneElement(this.props.children, { loggedIn: loggedIn, handleLogin: this.handleLogin })}
         </section>
       </div>
@@ -38,7 +45,7 @@ class Layout extends React.Component {
   }
 }
 
-export default createRefetchContainer(Layout,
+export default createRefetchContainer(withStyles(styles)(Layout),
   graphql`
     fragment Layout_me on User {
       id,

@@ -1,8 +1,16 @@
 import React from 'react'
 import { Link } from 'found'
 import { graphql, createFragmentContainer } from 'react-relay'
+import { withStyles } from 'material-ui/styles'
 import { List, ListItem } from 'material-ui'
 import SolutionData from './SolutionData'
+
+const styles = theme => ({
+  link: {
+    textDecoration: 'none',
+    color: 'blue'
+  }
+})
 
 class SolutionsList extends React.Component {
   createSolutionsList (solutions) {
@@ -15,7 +23,7 @@ class SolutionsList extends React.Component {
             <ListItem>
               <SolutionData solution={solution} themeData={solution.theme.theme_data} givenVoice={solution.theme.given_voice} />
             </ListItem>
-            <Link to={solutionLink}>Continue editing</Link>
+            <Link to={solutionLink} className={this.props.classes.link}>Continue editing</Link>
           </List>
         </ListItem>
       )
@@ -36,7 +44,7 @@ class SolutionsList extends React.Component {
   }
 }
 
-export default createFragmentContainer(SolutionsList,
+export default createFragmentContainer(withStyles(styles)(SolutionsList),
   graphql`
     fragment SolutionsList_solutions on SolutionTheme @relay(plural: true) {
       id,
