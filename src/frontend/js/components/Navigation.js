@@ -66,7 +66,7 @@ class Navigation extends React.Component {
             <Link to='/' className={classes.logo}>
               harmonise.it
             </Link>
-            <Link to='/' className={classes.divide}>
+            <Link to='/themes' className={classes.divide}>
               Themes
             </Link>
             { this.props.loggedIn
