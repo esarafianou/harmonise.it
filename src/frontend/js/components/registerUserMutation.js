@@ -13,7 +13,6 @@ const mutation = graphql`
 `
 
 function commit (props, username, password, confirmPassword) {
-  console.log(this.props)
   const environment = modernEnvironment
   const router = props.router
   return commitMutation(environment, {
