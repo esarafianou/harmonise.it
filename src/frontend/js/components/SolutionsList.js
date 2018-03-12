@@ -2,7 +2,8 @@ import React from 'react'
 import { Link } from 'found'
 import { graphql, createFragmentContainer } from 'react-relay'
 import { withStyles } from 'material-ui/styles'
-import { List, ListItem, Grid, Paper, Typography, Divider } from 'material-ui'
+import { List, ListItem, Grid, Paper, Typography, Divider, Chip } from 'material-ui'
+import { difficulty } from '../utils'
 import SolutionData from './SolutionData'
 
 const styles = theme => ({
@@ -17,7 +18,8 @@ const styles = theme => ({
   },
   link: {
     textDecoration: 'none',
-    color: 'blue'
+    color: 'blue',
+    marginBottom: 10
   },
   text: {
     marginTop: 10,
@@ -27,19 +29,35 @@ const styles = theme => ({
 
 class SolutionsList extends React.Component {
   createSolutionsList (solutions) {
+    const { classes } = this.props
+
     return solutions.map((solution, i) => {
       const solutionLink = '/solutions/' + solution.id
+
+      const chipStyle = {
+        backgroundColor: difficulty[solution.theme.difficulty].color,
+        color: 'white',
+        fontWeight: 'bold',
+        float: 'right'
+      }
+
       return (
         <div key={i}>
           <Divider />
           <ListItem>
-            <List>
-              <ListItem>Given voice: {solution.theme.given_voice}</ListItem>
-              <ListItem>
-                <SolutionData solution={solution} themeData={solution.theme.theme_data} givenVoice={solution.theme.given_voice} />
-              </ListItem>
-              <Link to={solutionLink} className={this.props.classes.link}>Continue editing</Link>
-            </List>
+            <Grid container>
+              <Grid item md={6}>
+                <Typography type='body2' className={classes.descr}>{solution.theme.description}</Typography>
+              </Grid>
+              <Grid item md={6}>
+                <Chip label={difficulty[solution.theme.difficulty].name} style={chipStyle} />
+              </Grid>
+              <Grid item md={12}>
+                <SolutionData solution={solution} themeData={solution.theme.theme_data}
+                  givenVoice={solution.theme.given_voice} editable={false} />
+              </Grid>
+              <Link to={solutionLink} className={classes.link}>Continue editing</Link>
+            </Grid>
           </ListItem>
         </div>
       )
@@ -49,7 +67,7 @@ class SolutionsList extends React.Component {
   render () {
     const { classes } = this.props
     return (
-      <Grid justify='center' spacing={24} container className={classes.root}>
+      <Grid justify='center' spacing={0} container className={classes.root}>
         <Paper className={classes.paper}>
           <Typography type='title' className={classes.text}>
             My Solutions
@@ -68,7 +86,9 @@ export default createFragmentContainer(withStyles(styles)(SolutionsList),
     fragment SolutionsList_solutions on SolutionTheme @relay(plural: true) {
       id,
       theme {
-        given_voice,
+        description,
+        difficulty,
+        given_voice
         theme_data
       }
       ...SolutionData_solution

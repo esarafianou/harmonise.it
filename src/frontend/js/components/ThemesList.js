@@ -1,10 +1,11 @@
 import React from 'react'
 import { Link } from 'found'
 import { graphql, createFragmentContainer } from 'react-relay'
-import { List, ListItem, Button, Divider, Grid, Paper, Typography } from 'material-ui'
+import { List, ListItem, Button, Divider, Grid, Paper, Typography, Chip } from 'material-ui'
 import { withStyles } from 'material-ui/styles'
 import ThemeData from './ThemeData'
 import createSolutionMutation from './createSolutionMutation'
+import { difficulty } from '../utils'
 
 const styles = theme => ({
   root: {
@@ -18,11 +19,18 @@ const styles = theme => ({
   },
   link: {
     textDecoration: 'none',
-    color: 'blue'
+    color: 'blue',
+    marginBottom: 10
   },
   text: {
     marginTop: 20,
     marginBottom: 5
+  },
+  descr: {
+    marginTop: 10
+  },
+  button: {
+    marginBottom: 10
   }
 })
 
@@ -32,29 +40,35 @@ class ThemesList extends React.Component {
   }
 
   createthemesList (themes) {
-    let difficulty = {
-      1: 'very easy',
-      2: 'easy',
-      3: 'medium',
-      4: 'advanced',
-      5: 'expert'
-    }
-
     return themes.map((theme, i) => {
+      const chipStyle = {
+        backgroundColor: difficulty[theme.difficulty].color,
+        color: 'white',
+        fontWeight: 'bold',
+        float: 'right'
+      }
+
+      const { classes } = this.props
+
       return (
         <div key={i}>
           <Divider />
           <ListItem>
-            <List>
-              <ListItem key='1'>{theme.description}</ListItem>
-              <ListItem key='2'>Given voice: {theme.given_voice}</ListItem>
-              <ListItem key='3'>Difficulty: {difficulty[theme.difficulty]}</ListItem>
-              <ListItem key='4'><ThemeData theme={theme} /></ListItem>
+            <Grid container>
+              <Grid item md={6}>
+                <Typography type='body2' className={classes.descr}>{theme.description}</Typography>
+              </Grid>
+              <Grid item md={6}>
+                <Chip label={difficulty[theme.difficulty].name} style={chipStyle} />
+              </Grid>
+              <Grid item md={12}>
+                <ThemeData theme={theme} />
+              </Grid>
               {this.props.loggedIn
-              ? <Button raised key='5' onClick={() => { this.createSolution(theme) }}>Solve it!</Button>
-              : <Link to='/login' key='5' className={this.props.classes.link}>Login to start solving!</Link>
+              ? <Button raised key='5' className={classes.button}onClick={() => { this.createSolution(theme) }}>Solve it!</Button>
+              : <Link to='/login' key='5' className={classes.link}>Login to start solving!</Link>
               }
-            </List>
+            </Grid>
           </ListItem>
         </div>
       )
@@ -64,7 +78,7 @@ class ThemesList extends React.Component {
   render () {
     const { classes } = this.props
     return (
-      <Grid justify='center' spacing={24} container className={classes.root}>
+      <Grid justify='center' spacing={0} container className={classes.root}>
         <Paper className={classes.paper}>
           <Typography type='title'>
             Themes
@@ -87,7 +101,6 @@ export default createFragmentContainer(withStyles(styles)(ThemesList),
       id,
       description
       difficulty,
-      given_voice,
       ...ThemeData_theme
     }
   `
