@@ -62,14 +62,14 @@ Connection.sync({ force: true }).then(() => {
   .then((user) => {
     return Theme.create({
       difficulty: 1,
-      description: 'first theme',
+      description: 'Make use only of the I, IV and V steps',
       given_voice: 'soprano',
       theme_data: JSON.stringify(themeData)
     })
     .then(() => {
       return Theme.create({
         difficulty: 2,
-        description: 'second theme',
+        description: 'Make use only of the I, IV and V steps using both the root and the third on the bass voice',
         given_voice: 'soprano',
         theme_data: JSON.stringify(themeData)
       })
