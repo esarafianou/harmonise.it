@@ -11,7 +11,7 @@ let romanNumerals = {
 }
 
 let init = (element, factoryWidth) => {
-  let factory = new VF.Factory({renderer: {elementId: element, width: factoryWidth, height: window.innerHeight - 100}})
+  let factory = new VF.Factory({renderer: {elementId: element, width: factoryWidth, height: 230}})
   let context = factory.getContext()
   return {factory: factory,
     context: context}
