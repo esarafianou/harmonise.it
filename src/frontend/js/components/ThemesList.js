@@ -55,10 +55,10 @@ class ThemesList extends React.Component {
           <Divider />
           <ListItem>
             <Grid container>
-              <Grid item md={6}>
+              <Grid item md={10}>
                 <Typography type='body2' className={classes.descr}>{theme.description}</Typography>
               </Grid>
-              <Grid item md={6}>
+              <Grid item md={2}>
                 <Chip label={difficulty[theme.difficulty].name} style={chipStyle} />
               </Grid>
               <Grid item md={12}>
