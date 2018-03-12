@@ -77,7 +77,7 @@ let checkIfBarCompleted = (note, barDuration, barCompleted, numBeats, beatValue)
     barCompleted: barCompleted}
 }
 
-let addNotesToStave = (i, voice, iterator, barCompleted, numBeats, beatValue) => {
+let addNotesToStave = (i, voice, iterator, barCompleted, numBeats, beatValue, position = null) => {
   let notesArray = []
   let barDuration = 0
   let currentNote, staveNote, checkResults
@@ -94,6 +94,11 @@ let addNotesToStave = (i, voice, iterator, barCompleted, numBeats, beatValue) =>
     }
     if (currentNote.hint !== null) {
       staveNote.addAnnotation(0, newAnnotation(currentNote.hint, 'top'))
+    }
+    if (position === iterator) {
+      staveNote.setStyle({fillStyle: 'red', strokeStyle: 'red'})
+    } else {
+      staveNote.setStyle({fillStyle: 'black', strokeStyle: 'black'})
     }
 
     notesArray.push(staveNote)
@@ -121,11 +126,7 @@ let makeSystem = (factory, width, x, y, i, factoryWidth, changeLine) => {
     changeLine: changeLine}
 }
 
-export default function renderMusicPiece (element, musicPiece) {
-  if (typeof (window.leak) === 'undefined') {
-    window.leak = []
-  }
-  window.leak.push(1)
+export default function renderMusicPiece (element, musicPiece, editable, cursor) {
   let system, systemResults, voicesToBeRendered, stavesToBeRendered, notes, stave
   let factoryWidth = 1000
   let x = 20
@@ -167,8 +168,14 @@ export default function renderMusicPiece (element, musicPiece) {
       for (let k = 0; k < musicPiece.staves[j].voices.length; k++) {
         currentVoice = musicPiece.staves[j].voices[k]
         barCompleted = false
-        let notesToStaveResults = addNotesToStave(k, currentVoice, staveNotesIterator[j][k],
+        let notesToStaveResults
+        if (editable && cursor.stave === j && cursor.voice === k) {
+          notesToStaveResults = addNotesToStave(k, currentVoice, staveNotesIterator[j][k],
+                                            barCompleted, numBeats, beatValue, cursor.position)
+        } else {
+          notesToStaveResults = addNotesToStave(k, currentVoice, staveNotesIterator[j][k],
                                             barCompleted, numBeats, beatValue)
+        }
         staveNotesIterator[j][k] = notesToStaveResults.iterator
         notes = notesToStaveResults.notesArray
         voices.push(new VF.Voice({num_beats: numBeats, beatValue: beatValue}).addTickables(notes))
