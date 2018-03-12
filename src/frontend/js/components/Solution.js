@@ -1,7 +1,8 @@
 import React from 'react'
 import { graphql, createFragmentContainer } from 'react-relay'
-import { List, ListItem, Grid, Paper } from 'material-ui'
+import { Grid, Paper, Typography, Chip } from 'material-ui'
 import { withStyles } from 'material-ui/styles'
+import { difficulty } from '../utils'
 import SolutionData from './SolutionData'
 
 const styles = theme => ({
@@ -18,28 +19,34 @@ const styles = theme => ({
 
 class Solution extends React.Component {
   createSolutionDetails (solution) {
-    let difficulty = {
-      1: 'very easy',
-      2: 'easy',
-      3: 'medium',
-      4: 'advanced',
-      5: 'expert'
-    }
+    const { classes } = this.props
 
+    const chipStyle = {
+      backgroundColor: difficulty[solution.theme.difficulty].color,
+      color: 'white',
+      fontWeight: 'bold',
+      float: 'right'
+    }
     return (
-      <List>
-        <ListItem> {solution.theme.description} </ListItem>
-        <ListItem> Given voice: {solution.theme.given_voice} </ListItem>
-        <ListItem> Difficulty: {difficulty[solution.theme.difficulty]} </ListItem>
-        <ListItem> <SolutionData solution={solution} themeData={solution.theme.theme_data} givenVoice={solution.theme.given_voice} /> </ListItem>
-      </List>
+      <Grid container>
+        <Grid item md={6}>
+          <Typography type='body2' className={classes.descr}>{solution.theme.description}</Typography>
+        </Grid>
+        <Grid item md={6}>
+          <Chip label={difficulty[solution.theme.difficulty].name} style={chipStyle} />
+        </Grid>
+        <Grid item md={12}>
+          <SolutionData solution={solution} themeData={solution.theme.theme_data}
+            givenVoice={solution.theme.given_voice} editable />
+        </Grid>
+      </Grid>
     )
   }
 
   render () {
     const { classes } = this.props
     return (
-      <Grid justify='center' spacing={24} container className={classes.root}>
+      <Grid justify='center' spacing={0} container className={classes.root}>
         <Paper className={classes.paper}>
           { this.createSolutionDetails(this.props.solution) }
         </Paper>
