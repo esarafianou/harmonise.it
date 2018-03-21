@@ -28,7 +28,7 @@ const styles = theme => ({
 class SolutionsList extends React.Component {
   createSolutionsList (solutions) {
     return solutions.map((solution, i) => {
-      let solutionLink = '/solutions/' + solution.id
+      const solutionLink = '/solutions/' + solution.id
       return (
         <div key={i}>
           <Divider />
