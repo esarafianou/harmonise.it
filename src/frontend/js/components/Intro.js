@@ -63,8 +63,8 @@ class Intro extends React.Component {
             Welcome to harmonise.it!
           </Typography>
           <Typography align='justify' type='subheading' paragraph>
-            harmonise.it is a platform which <b> helps classical music theory and harmony students
-            practice harmony rules</b>. Based on a theme with a given soprano or bass voice,
+            harmonise.it is a platform which <strong> helps classical music theory and harmony students
+            practice harmony rules</strong>. Based on a theme with a given soprano or bass voice,
             you can complete the rest of the voices and create a music piece with four voices
             (soprano, alto, tenoro, bass) that comply with the music harmony rules.
           </Typography>

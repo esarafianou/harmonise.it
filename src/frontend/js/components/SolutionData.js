@@ -21,14 +21,15 @@ class SolutionData extends React.Component {
   }
 
   eventListener (event) {
-    if (event.keyCode === 39) {
-      let cursor = {...this.state.cursor}
-      cursor.position += 1
-      this.setState({cursor: cursor})
-    } else if (event.keyCode === 37) {
-      let cursor = {...this.state.cursor}
-      cursor.position = Math.max(cursor.position - 1, 0)
-      this.setState({cursor: cursor})
+    const cursor = {...this.state.cursor}
+    switch (event.keyCode) {
+      case 39:
+        cursor.position += 1
+        this.setState({cursor: cursor})
+        break
+      case 37:
+        cursor.position = Math.max(cursor.position - 1, 0)
+        this.setState({cursor: cursor})
     }
   }
 

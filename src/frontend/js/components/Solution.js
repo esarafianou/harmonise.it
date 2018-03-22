@@ -19,8 +19,6 @@ const styles = theme => ({
 
 class Solution extends React.Component {
   createSolutionDetails (solution) {
-    const { classes } = this.props
-
     const chipStyle = {
       backgroundColor: difficulty[solution.theme.difficulty].color,
       color: 'white',
@@ -30,7 +28,7 @@ class Solution extends React.Component {
     return (
       <Grid container>
         <Grid item md={10}>
-          <Typography type='body2' className={classes.descr}>{solution.theme.description}</Typography>
+          <Typography type='body2'>{solution.theme.description}</Typography>
         </Grid>
         <Grid item md={2}>
           <Chip label={difficulty[solution.theme.difficulty].name} style={chipStyle} />
