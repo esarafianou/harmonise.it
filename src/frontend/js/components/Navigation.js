@@ -14,17 +14,23 @@ const styles = {
   },
   divide: {
     marginLeft: 50,
-    color: 'white'
+    color: 'white',
+    textDecoration: 'none'
   },
   userLinks: {
     marginLeft: 15,
-    color: 'white'
+    color: 'white',
+    textDecoration: 'none'
   },
   loggedUserLinks: {
-    clear: 'none'
+    clear: 'none',
+    color: 'white',
+    textDecoration: 'none'
   },
-  fontColor: {
-    color: 'white'
+  logo: {
+    color: 'white',
+    textDecoration: 'none',
+    fontSize: '130%'
   }
 }
 
@@ -55,12 +61,12 @@ class Navigation extends React.Component {
 
     return (
       <AppBar position='static' className={classes.root}>
-        <Toolbar className={classes.fontColor}>
+        <Toolbar>
           <Typography type='title' className={classes.flex}>
-            <Link to='/' className={classes.fontColor}>
+            <Link to='/' className={classes.logo}>
               harmonise.it
             </Link>
-            <Link to='/' className={classes.divide}>
+            <Link to='/themes' className={classes.divide}>
               Themes
             </Link>
             { this.props.loggedIn
