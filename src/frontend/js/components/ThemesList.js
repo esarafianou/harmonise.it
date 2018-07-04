@@ -98,9 +98,9 @@ class ThemesList extends React.Component {
 export default createFragmentContainer(withStyles(styles)(ThemesList),
   graphql`
     fragment ThemesList_themes on Theme @relay(plural: true) {
-      id,
+      id
       description
-      difficulty,
+      difficulty
       ...ThemeData_theme
     }
   `
