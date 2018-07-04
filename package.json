@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "argon2": "^0.16.2",
+    "argon2": "^0.19.3",
     "axios": "^0.17.1",
     "babel-cli": "^6.26.0",
     "body-parser": "^1.18.2",
@@ -39,6 +39,7 @@
     "react-bootstrap": "^0.32.0",
     "react-dom": "^16.2.0",
     "react-relay": "^1.1.0",
+    "retire": "^1.6.0",
     "sequelize": "^4.28.6",
     "uuid": "^3.1.0",
     "vexflow": "^1.2.84"
