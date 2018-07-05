@@ -77,15 +77,18 @@ let checkIfBarCompleted = (note, barDuration, barCompleted, numBeats, beatValue)
     barCompleted: barCompleted}
 }
 
-let addNotesToStave = (i, voice, iterator, barCompleted, numBeats, beatValue, position = null) => {
+let addNotesToStave = (i, voice, iterator, clef, barCompleted, numBeats, beatValue, position = null) => {
   let notesArray = []
   let barDuration = 0
   let currentNote, staveNote, checkResults
   while (iterator < voice.length && (barCompleted === false)) {
     currentNote = voice[iterator]
-    staveNote = new VF.StaveNote({keys: [currentNote.key],
+    staveNote = new VF.StaveNote({
+      keys: [currentNote.key],
+      clef: clef,
       duration: getDuration(currentNote.duration, currentNote.type),
-      stem_direction: getStemDirection(i)})
+      stem_direction: getStemDirection(i)
+    })
     if (currentNote.accidental !== '' && currentNote.type !== 'pause') {
       staveNote.addAccidental(0, new VF.Accidental(currentNote.accidental))
     }
@@ -170,10 +173,10 @@ export default function renderMusicPiece (element, musicPiece, editable, cursor)
         barCompleted = false
         let notesToStaveResults
         if (editable && cursor.stave === j && cursor.voice === k) {
-          notesToStaveResults = addNotesToStave(k, currentVoice, staveNotesIterator[j][k],
+          notesToStaveResults = addNotesToStave(k, currentVoice, staveNotesIterator[j][k], musicPiece.staves[j].clef,
                                             barCompleted, numBeats, beatValue, cursor.position)
         } else {
-          notesToStaveResults = addNotesToStave(k, currentVoice, staveNotesIterator[j][k],
+          notesToStaveResults = addNotesToStave(k, currentVoice, staveNotesIterator[j][k], musicPiece.staves[j].clef,
                                             barCompleted, numBeats, beatValue)
         }
         staveNotesIterator[j][k] = notesToStaveResults.iterator
