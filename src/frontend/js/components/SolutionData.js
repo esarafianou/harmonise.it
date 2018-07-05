@@ -46,6 +46,29 @@ class SolutionData extends React.Component {
         cursor.stave = 0
       }
       this.setState({cursor: cursor})
+    } else if ((event.key >= 'a' && event.key <= 'g') || (event.key >= 'A' && event.key <= 'G')) {
+      const solutionData = {...this.state.solutionData}
+      if (this.props.givenVoice === 'soprano') {
+        if (cursor.stave === 0) {
+          if (cursor.voice !== 0) {
+            solutionData[cursor.voice - 1][cursor.position].key = event.key + '/4'
+            solutionData[cursor.voice - 1][cursor.position].type = 'note'
+          } else {
+            console.log('Not editable')
+          }
+        } else {
+          solutionData[2][cursor.position].key = event.key + '/3'
+          solutionData[2][cursor.position].type = 'note'
+        }
+      } else {
+        if (cursor.stave === 0) {
+          solutionData[cursor.voice][cursor.position].key = event.key + '/4'
+          solutionData[2][cursor.position].type = 'note'
+        } else {
+          console.log('Not editable')
+        }
+      }
+      this.setState({solutionData: solutionData})
     }
   }
 
