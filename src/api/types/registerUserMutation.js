@@ -27,7 +27,7 @@ export const registerUserMutation = mutationWithClientMutationId({
   },
   mutateAndGetPayload: ({ username, password, confirmPassword }) => {
     if (password !== confirmPassword) {
-      throw new Error('Invalid username or password')
+      throw new Error('Passwords do not match')
     } else {
       return argon2.hash(password).then(hashedPassword => {
         return User.create({
