@@ -45,10 +45,18 @@ class Login extends React.Component {
     super()
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      invalidLogin: false
     }
     this.handleUsername = this.handleUsername.bind(this)
     this.handlePassword = this.handlePassword.bind(this)
+  }
+
+  showInvalidLogin () {
+    setTimeout(() => { this.setState({invalidLogin: false}) }, 2000)
+    return (
+      <p className='notification'>Invalid username or password</p>
+    )
   }
 
   handleUsername (event) {
@@ -79,7 +87,7 @@ class Login extends React.Component {
         this.props.router.push('/')
         this.props.handleLogin(response.data.username)
       } else {
-        console.log('Invalid username or password')
+        this.setState({invalidLogin: true})
       }
     })
     .catch(error => {
@@ -91,38 +99,41 @@ class Login extends React.Component {
     const {classes} = this.props
 
     return (
-      <Grid justify='center' spacing={24} container className={classes.root}>
-        <Paper className={classes.paper}>
-          <form onSubmit={this.handleSubmit} className={classes.container}>
-            <TextField
-              id='username'
-              label='Username'
-              className={classes.textField}
-              value={this.state.username}
-              onChange={this.handleUsername}
-              margin='normal'
-            />
-            <TextField
-              id='password'
-              label='Password'
-              className={classes.textField}
-              type='password'
-              value={this.state.password}
-              onChange={this.handlePassword}
-              margin='normal'
-            />
-          </form>
-          <Button raised className={classes.button} type='submit' value='Submit'
-            onClick={(event) => { this.handleSubmit(event) }}> Login
-          </Button>
-          <Typography className={classes.text}>
-            New to harmonise.it? {' '}
-            <Link to='/register' className={classes.link}>
-               Register now!
-            </Link>
-          </Typography>
-        </Paper>
-      </Grid>
+      <div>
+        { this.state.invalidLogin ? this.showInvalidLogin() : null }
+        <Grid justify='center' spacing={24} container className={classes.root}>
+          <Paper className={classes.paper}>
+            <form onSubmit={this.handleSubmit} className={classes.container}>
+              <TextField
+                id='username'
+                label='Username'
+                className={classes.textField}
+                value={this.state.username}
+                onChange={this.handleUsername}
+                margin='normal'
+              />
+              <TextField
+                id='password'
+                label='Password'
+                className={classes.textField}
+                type='password'
+                value={this.state.password}
+                onChange={this.handlePassword}
+                margin='normal'
+              />
+            </form>
+            <Button raised className={classes.button} type='submit' value='Submit'
+              onClick={(event) => { this.handleSubmit(event) }}> Login
+            </Button>
+            <Typography className={classes.text}>
+              New to harmonise.it? {' '}
+              <Link to='/register' className={classes.link}>
+                 Register now!
+              </Link>
+            </Typography>
+          </Paper>
+        </Grid>
+      </div>
     )
   }
 }
