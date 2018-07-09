@@ -1,7 +1,9 @@
 import React from 'react'
 import { graphql, createFragmentContainer } from 'react-relay'
+import { Button } from 'material-ui'
 import renderSolution from '../helpers/vexFlowSolutionRendering'
 import { constructThemeSolutionData } from '../helpers/constructThemeSolutionData'
+import updateSolutionMutation from './updateSolutionMutation'
 
 class SolutionData extends React.Component {
   constructor () {
@@ -16,6 +18,10 @@ class SolutionData extends React.Component {
       solutionData: ''
     }
     this.eventListener = this.eventListener.bind(this)
+  }
+
+  saveSolution () {
+    updateSolutionMutation.commit(this.props, this.state.solutionData)
   }
 
   _renderSolution (element, solutionInfo) {
@@ -94,7 +100,10 @@ class SolutionData extends React.Component {
 
   render () {
     return (
-      <div ref={el => { this.el = el }} />
+      <div>
+        <div ref={el => { this.el = el }} />
+        { this.props.editable ? <Button raised onClick={() => { this.saveSolution() }}>Save</Button> : null }
+      </div>
     )
   }
 }

@@ -34,7 +34,7 @@ class Solution extends React.Component {
           <Chip label={difficulty[solution.theme.difficulty].name} style={chipStyle} />
         </Grid>
         <Grid item md={12}>
-          <SolutionData solution={solution} themeData={solution.theme.theme_data}
+          <SolutionData solution={solution} themeData={solution.theme.theme_data} id={solution.id}
             givenVoice={solution.theme.given_voice} editable />
         </Grid>
       </Grid>
