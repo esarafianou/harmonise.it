@@ -52,7 +52,7 @@ class SolutionData extends React.Component {
         cursor.stave = 0
       }
       this.setState({cursor: cursor})
-    } else if ((event.key >= 'a' && event.key <= 'g') || (event.key >= 'A' && event.key <= 'G')) {
+    } else if (event.keyCode >= 65 && event.keyCode <= 71) {
       const solutionData = {...this.state.solutionData}
       if (this.props.givenVoice === 'soprano') {
         if (cursor.stave === 0) {
