@@ -1,9 +1,25 @@
 import React from 'react'
 import { graphql, createFragmentContainer } from 'react-relay'
-import { Button } from 'material-ui'
+import { Button, Chip, Avatar } from 'material-ui'
+import { withStyles } from 'material-ui/styles'
 import renderSolution from '../helpers/vexFlowSolutionRendering'
 import { constructThemeSolutionData } from '../helpers/constructThemeSolutionData'
 import updateSolutionMutation from './updateSolutionMutation'
+
+const styles = theme => ({
+  icon: {
+    width: 35,
+    height: 35,
+    marginLeft: 5,
+    backgroundColor: '#BEEBEF',
+    '&:hover': {
+      backgroundColor: '#BEEBEF'
+    },
+    '&:focus': {
+      backgroundColor: '#BEEBEF'
+    }
+  }
+})
 
 class SolutionData extends React.Component {
   constructor () {
@@ -18,6 +34,7 @@ class SolutionData extends React.Component {
       solutionData: ''
     }
     this.eventListener = this.eventListener.bind(this)
+    this.handleModification = this.handleModification.bind(this)
   }
 
   saveSolution () {
@@ -78,6 +95,45 @@ class SolutionData extends React.Component {
     }
   }
 
+  handleModification (accidental) {
+    let currentNote
+    const solutionData = {...this.state.solutionData}
+    if (this.props.givenVoice === 'soprano') {
+      if (this.state.cursor.stave === 0) {
+        if (this.state.cursor.voice !== 0) {
+          currentNote = solutionData[this.state.cursor.voice - 1][this.state.cursor.position]
+          if (currentNote.accidental !== accidental && currentNote.type === 'note') {
+            solutionData[this.state.cursor.voice - 1][this.state.cursor.position].accidental = accidental
+          } else if (currentNote.accidental !== '') {
+            solutionData[this.state.cursor.voice - 1][this.state.cursor.position].accidental = ''
+          }
+        } else {
+          console.log('Not editable')
+        }
+      } else {
+        console.log(this.state.cursor.voice)
+        currentNote = solutionData[2][this.state.cursor.position]
+        if (currentNote.accidental !== accidental && currentNote.type === 'note') {
+          solutionData[2][this.state.cursor.position].accidental = accidental
+        } else {
+          solutionData[2][this.state.cursor.position].accidental = ''
+        }
+      }
+    } else {
+      if (this.state.cursor.stave === 0) {
+        currentNote = solutionData[this.state.cursor.voice][this.state.cursor.position]
+        if (currentNote.accidental !== accidental && currentNote.type === 'note') {
+          solutionData[this.state.cursor.voice][this.state.cursor.position].accidental = accidental
+        } else {
+          solutionData[this.state.cursor.voice][this.state.cursor.position].accidental = ''
+        }
+      } else {
+        console.log('Not editable')
+      }
+    }
+    this.setState({solutionData: solutionData})
+  }
+
   componentDidMount () {
     document.addEventListener('keydown', this.eventListener)
     this.setState({ themeData: JSON.parse(this.props.themeData), solutionData: JSON.parse(this.props.solution.solution_data) })
@@ -99,8 +155,15 @@ class SolutionData extends React.Component {
   }
 
   render () {
+    const { classes } = this.props
     return (
       <div>
+        <Chip className={classes.icon} label={<Avatar src='../../../../assets/images/music_flat_sign.png' />}
+          onClick={() => this.handleModification('b')} />
+        <Chip className={classes.icon} label={<Avatar src='../../../../assets/images/music_sharp_sign.png' />}
+          onClick={() => this.handleModification('#')} />
+        <Chip className={classes.icon} label={<Avatar src='../../../../assets/images/music_none_sign.png' />}
+          onClick={() => this.handleModification('n')} />
         <div ref={el => { this.el = el }} />
         { this.props.editable ? <Button raised onClick={() => { this.saveSolution() }}>Save</Button> : null }
       </div>
@@ -108,7 +171,7 @@ class SolutionData extends React.Component {
   }
 }
 
-export default createFragmentContainer(SolutionData,
+export default createFragmentContainer(withStyles(styles)(SolutionData),
   graphql`
     fragment SolutionData_solution on SolutionTheme {
       solution_data
