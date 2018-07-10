@@ -31,7 +31,8 @@ class SolutionData extends React.Component {
         position: 0
       },
       themeData: '',
-      solutionData: ''
+      solutionData: '',
+      saveButton: 'save'
     }
     this.eventListener = this.eventListener.bind(this)
     this.handleModification = this.handleModification.bind(this)
@@ -39,6 +40,8 @@ class SolutionData extends React.Component {
 
   saveSolution () {
     updateSolutionMutation.commit(this.props, this.state.solutionData)
+    this.setState({saveButton: 'Saved'})
+    setTimeout(() => { this.setState({saveButton: 'Save'}) }, 2000)
   }
 
   _renderSolution (element, solutionInfo) {
@@ -165,7 +168,7 @@ class SolutionData extends React.Component {
         <Chip className={classes.icon} label={<Avatar src='../../../../assets/images/music_none_sign.png' />}
           onClick={() => this.handleModification('n')} />
         <div ref={el => { this.el = el }} />
-        { this.props.editable ? <Button raised onClick={() => { this.saveSolution() }}>Save</Button> : null }
+        { this.props.editable ? <Button raised onClick={() => { this.saveSolution() }}>{this.state.saveButton}</Button> : null }
       </div>
     )
   }
