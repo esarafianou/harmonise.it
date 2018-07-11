@@ -79,7 +79,19 @@ class SolutionData extends React.Component {
 
   eventListener (event) {
     const cursor = {...this.state.cursor}
-    if (event.key === 'ArrowRight') {
+    if (event.key === 'ArrowUp' && event.getModifierState('Control')) {
+      const solutionData = {...this.state.solutionData}
+      const solutionDataVoice = this.getSolutionDataVoice()
+      const [ key, currentOctave ] = solutionData[solutionDataVoice][cursor.position].key.split('/')
+      solutionData[solutionDataVoice][cursor.position].key = key + '/' + (parseInt(currentOctave, 10) + 1)
+      this.setState({solutionData: solutionData})
+    } else if (event.key === 'ArrowDown' && event.getModifierState('Control')) {
+      const solutionData = {...this.state.solutionData}
+      const solutionDataVoice = this.getSolutionDataVoice()
+      const [ key, currentOctave ] = solutionData[solutionDataVoice][cursor.position].key.split('/')
+      solutionData[solutionDataVoice][cursor.position].key = key + '/' + (parseInt(currentOctave, 10) - 1)
+      this.setState({solutionData: solutionData})
+    } else if (event.key === 'ArrowRight') {
       cursor.position += 1
       this.setState({cursor: cursor})
     } else if (event.key === 'ArrowLeft') {
