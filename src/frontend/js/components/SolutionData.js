@@ -48,6 +48,35 @@ class SolutionData extends React.Component {
     return renderSolution(element, solutionInfo, this.props.editable, this.state.cursor)
   }
 
+  getSolutionDataVoice () {
+    const cursor = this.state.cursor
+    if (this.props.givenVoice === 'soprano') {
+      if (cursor.stave === 0) {
+        if (cursor.voice !== 0) {
+          return cursor.voice - 1
+        } else {
+          return -1 // -1 means not editable
+        }
+      } else {
+        return 2
+      }
+    } else {
+      if (cursor.stave === 0) {
+        return cursor.voice
+      } else {
+        return -1
+      }
+    }
+  }
+
+  getNoteOctave () {
+    if (this.state.cursor.stave !== 0) {
+      return '/3'
+    } else {
+      return '/4'
+    }
+  }
+
   eventListener (event) {
     const cursor = {...this.state.cursor}
     if (event.key === 'ArrowRight') {
@@ -74,64 +103,29 @@ class SolutionData extends React.Component {
       this.setState({cursor: cursor})
     } else if (event.keyCode >= 65 && event.keyCode <= 71) {
       const solutionData = {...this.state.solutionData}
-      if (this.props.givenVoice === 'soprano') {
-        if (cursor.stave === 0) {
-          if (cursor.voice !== 0) {
-            solutionData[cursor.voice - 1][cursor.position].key = event.key + '/4'
-            solutionData[cursor.voice - 1][cursor.position].type = 'note'
-          } else {
-            console.log('Not editable')
-          }
-        } else {
-          solutionData[2][cursor.position].key = event.key + '/3'
-          solutionData[2][cursor.position].type = 'note'
-        }
+      const solutionDataVoice = this.getSolutionDataVoice()
+      const noteOctave = this.getNoteOctave()
+      if (solutionDataVoice === -1) {
+        console.log('not editable')
       } else {
-        if (cursor.stave === 0) {
-          solutionData[cursor.voice][cursor.position].key = event.key + '/4'
-          solutionData[2][cursor.position].type = 'note'
-        } else {
-          console.log('Not editable')
-        }
+        solutionData[solutionDataVoice][cursor.position].key = event.key + noteOctave
+        solutionData[solutionDataVoice][cursor.position].type = 'note'
       }
       this.setState({solutionData: solutionData})
     }
   }
 
   handleModification (accidental) {
-    let currentNote
     const solutionData = {...this.state.solutionData}
-    if (this.props.givenVoice === 'soprano') {
-      if (this.state.cursor.stave === 0) {
-        if (this.state.cursor.voice !== 0) {
-          currentNote = solutionData[this.state.cursor.voice - 1][this.state.cursor.position]
-          if (currentNote.accidental !== accidental && currentNote.type === 'note') {
-            solutionData[this.state.cursor.voice - 1][this.state.cursor.position].accidental = accidental
-          } else if (currentNote.accidental !== '') {
-            solutionData[this.state.cursor.voice - 1][this.state.cursor.position].accidental = ''
-          }
-        } else {
-          console.log('Not editable')
-        }
-      } else {
-        console.log(this.state.cursor.voice)
-        currentNote = solutionData[2][this.state.cursor.position]
-        if (currentNote.accidental !== accidental && currentNote.type === 'note') {
-          solutionData[2][this.state.cursor.position].accidental = accidental
-        } else {
-          solutionData[2][this.state.cursor.position].accidental = ''
-        }
-      }
+    let solutionDataVoice = this.getSolutionDataVoice()
+    if (solutionDataVoice === -1) {
+      console.log('not editable')
     } else {
-      if (this.state.cursor.stave === 0) {
-        currentNote = solutionData[this.state.cursor.voice][this.state.cursor.position]
-        if (currentNote.accidental !== accidental && currentNote.type === 'note') {
-          solutionData[this.state.cursor.voice][this.state.cursor.position].accidental = accidental
-        } else {
-          solutionData[this.state.cursor.voice][this.state.cursor.position].accidental = ''
-        }
-      } else {
-        console.log('Not editable')
+      const currentNote = solutionData[solutionDataVoice][this.state.cursor.position]
+      if (currentNote.accidental !== accidental && currentNote.type === 'note') {
+        solutionData[solutionDataVoice][this.state.cursor.position].accidental = accidental
+      } else if (currentNote.accidental !== '') {
+        solutionData[solutionDataVoice][this.state.cursor.position].accidental = ''
       }
     }
     this.setState({solutionData: solutionData})
