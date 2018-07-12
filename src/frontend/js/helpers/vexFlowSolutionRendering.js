@@ -129,7 +129,14 @@ let makeSystem = (factory, width, x, y, i, factoryWidth, changeLine) => {
     changeLine: changeLine}
 }
 
-export default function renderMusicPiece (element, musicPiece, editable, cursor) {
+const mapCursorVoices = {
+  'soprano': 0,
+  'alto': 1,
+  'tenoro': 2,
+  'bass': 0
+}
+
+export default function renderMusicPiece (element, musicPiece, editable, cursor, givenVoice) {
   let system, systemResults, voicesToBeRendered, stavesToBeRendered, notes, stave
   let factoryWidth = 1000
   let x = 20
@@ -172,7 +179,7 @@ export default function renderMusicPiece (element, musicPiece, editable, cursor)
         currentVoice = musicPiece.staves[j].voices[k]
         barCompleted = false
         let notesToStaveResults
-        if (editable && cursor.stave === j && cursor.voice === k) {
+        if (editable && cursor.stave === j && mapCursorVoices[cursor.voice] === k) {
           notesToStaveResults = addNotesToStave(k, currentVoice, staveNotesIterator[j][k], musicPiece.staves[j].clef,
                                             barCompleted, numBeats, beatValue, cursor.position)
         } else {

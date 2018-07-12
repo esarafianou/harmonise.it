@@ -27,7 +27,7 @@ class SolutionData extends React.Component {
     this.state = {
       cursor: {
         stave: 0,
-        voice: 0,
+        voice: '',
         position: 0
       },
       themeData: '',
@@ -45,28 +45,7 @@ class SolutionData extends React.Component {
   }
 
   _renderSolution (element, solutionInfo) {
-    return renderSolution(element, solutionInfo, this.props.editable, this.state.cursor)
-  }
-
-  getSolutionDataVoice () {
-    const cursor = this.state.cursor
-    if (this.props.givenVoice === 'soprano') {
-      if (cursor.stave === 0) {
-        if (cursor.voice !== 0) {
-          return cursor.voice - 1
-        } else {
-          return -1 // -1 means not editable
-        }
-      } else {
-        return 2
-      }
-    } else {
-      if (cursor.stave === 0) {
-        return cursor.voice
-      } else {
-        return -1
-      }
-    }
+    return renderSolution(element, solutionInfo, this.props.editable, this.state.cursor, this.props.givenVoice)
   }
 
   getNoteOctave () {
@@ -79,17 +58,25 @@ class SolutionData extends React.Component {
 
   eventListener (event) {
     const cursor = {...this.state.cursor}
+    const voiceMapper = {
+      'soprano': 0,
+      'alto': 1,
+      'tenoro': 2
+    }
+    const reverseVoiceMapper = {
+      0: 'soprano',
+      1: 'alto',
+      2: 'tenoro'
+    }
     if (event.key === 'ArrowUp' && event.getModifierState('Control')) {
       const solutionData = {...this.state.solutionData}
-      const solutionDataVoice = this.getSolutionDataVoice()
-      const [ key, currentOctave ] = solutionData[solutionDataVoice][cursor.position].key.split('/')
-      solutionData[solutionDataVoice][cursor.position].key = key + '/' + (parseInt(currentOctave, 10) + 1)
+      const [ key, currentOctave ] = solutionData[cursor.voice][cursor.position].key.split('/')
+      solutionData[cursor.voice][cursor.position].key = key + '/' + (parseInt(currentOctave, 10) + 1)
       this.setState({solutionData: solutionData})
     } else if (event.key === 'ArrowDown' && event.getModifierState('Control')) {
       const solutionData = {...this.state.solutionData}
-      const solutionDataVoice = this.getSolutionDataVoice()
-      const [ key, currentOctave ] = solutionData[solutionDataVoice][cursor.position].key.split('/')
-      solutionData[solutionDataVoice][cursor.position].key = key + '/' + (parseInt(currentOctave, 10) - 1)
+      const [ key, currentOctave ] = solutionData[cursor.voice][cursor.position].key.split('/')
+      solutionData[cursor.voice][cursor.position].key = key + '/' + (parseInt(currentOctave, 10) - 1)
       this.setState({solutionData: solutionData})
     } else if (event.key === 'ArrowRight') {
       cursor.position += 1
@@ -98,30 +85,29 @@ class SolutionData extends React.Component {
       cursor.position = Math.max(cursor.position - 1, 0)
       this.setState({cursor: cursor})
     } else if (event.key === 'ArrowDown') {
-      if (cursor.stave === 0 && cursor.voice < 2) {
-        cursor.voice = cursor.voice + 1
-      } else if (cursor.voice === 2) {
-        cursor.voice = 0
+      if (cursor.stave === 0 && voiceMapper[cursor.voice] < 2) {
+        cursor.voice = reverseVoiceMapper[voiceMapper[cursor.voice] + 1]
+      } else if (cursor.voice === 'tenoro') {
+        cursor.voice = 'bass'
         cursor.stave = 1
       }
       this.setState({cursor: cursor})
     } else if (event.key === 'ArrowUp') {
       if (cursor.stave === 0) {
-        cursor.voice = Math.max(cursor.voice - 1, 0)
+        cursor.voice = reverseVoiceMapper[Math.max(voiceMapper[cursor.voice] - 1, 0)]
       } else {
-        cursor.voice = 2
+        cursor.voice = 'tenoro'
         cursor.stave = 0
       }
       this.setState({cursor: cursor})
     } else if (event.keyCode >= 65 && event.keyCode <= 71) {
       const solutionData = {...this.state.solutionData}
-      const solutionDataVoice = this.getSolutionDataVoice()
       const noteOctave = this.getNoteOctave()
-      if (solutionDataVoice === -1) {
+      if (cursor.voice === this.props.givenVoice) {
         console.log('not editable')
       } else {
-        solutionData[solutionDataVoice][cursor.position].key = event.key + noteOctave
-        solutionData[solutionDataVoice][cursor.position].type = 'note'
+        solutionData[cursor.voice][cursor.position].key = event.key + noteOctave
+        solutionData[cursor.voice][cursor.position].type = 'note'
       }
       this.setState({solutionData: solutionData})
     }
@@ -129,15 +115,15 @@ class SolutionData extends React.Component {
 
   handleModification (accidental) {
     const solutionData = {...this.state.solutionData}
-    let solutionDataVoice = this.getSolutionDataVoice()
-    if (solutionDataVoice === -1) {
+    const cursor = this.state.cursor
+    if (cursor.voice === this.props.givenVoice) {
       console.log('not editable')
     } else {
-      const currentNote = solutionData[solutionDataVoice][this.state.cursor.position]
+      const currentNote = solutionData[cursor.voice][cursor.position]
       if (currentNote.accidental !== accidental && currentNote.type === 'note') {
-        solutionData[solutionDataVoice][this.state.cursor.position].accidental = accidental
+        solutionData[cursor.voice][cursor.position].accidental = accidental
       } else if (currentNote.accidental !== '') {
-        solutionData[solutionDataVoice][this.state.cursor.position].accidental = ''
+        solutionData[cursor.voice][cursor.position].accidental = ''
       }
     }
     this.setState({solutionData: solutionData})
@@ -146,7 +132,9 @@ class SolutionData extends React.Component {
   componentDidMount () {
     document.addEventListener('keydown', this.eventListener)
     this.setState({ themeData: JSON.parse(this.props.themeData), solutionData: JSON.parse(this.props.solution.solution_data) })
-
+    const cursor = {...this.state.cursor}
+    cursor.voice = this.props.givenVoice
+    this.setState({ cursor: cursor })
     const themeSolutionData = constructThemeSolutionData(JSON.parse(this.props.themeData), JSON.parse(this.props.solution.solution_data), this.props.givenVoice)
     this._renderSolution(this.el, themeSolutionData)
   }

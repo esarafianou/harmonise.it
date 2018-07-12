@@ -16,8 +16,21 @@ const pauseHeightAdjustment = {
   }
 }
 
+const solutionDataVoices = {
+  soprano: {
+    0: 'alto',
+    1: 'tenoro',
+    2: 'bass'
+  },
+  bass: {
+    0: 'soprano',
+    1: 'alto',
+    2: 'tenoro'
+  }
+}
+
 const _createSolutionData = (theme) => {
-  let voices = []
+  let voices = {}
   let note
   let themeData = JSON.parse(theme.theme_data)
   for (let i = 0; i < 3; i++) {
@@ -33,7 +46,7 @@ const _createSolutionData = (theme) => {
       }
       currentVoice.push(note)
     }
-    voices.push(currentVoice)
+    voices[solutionDataVoices[theme.given_voice][i]] = currentVoice
   }
   return JSON.stringify(voices)
 }
