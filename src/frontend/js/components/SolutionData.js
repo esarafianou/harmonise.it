@@ -1,6 +1,6 @@
 import React from 'react'
 import { graphql, createFragmentContainer } from 'react-relay'
-import { Button, Chip, Avatar } from 'material-ui'
+import { Button, Chip } from 'material-ui'
 import { withStyles } from 'material-ui/styles'
 import renderSolution from '../helpers/vexFlowSolutionRendering'
 import { constructThemeSolutionData } from '../helpers/constructThemeSolutionData'
@@ -155,12 +155,9 @@ class SolutionData extends React.Component {
     const { classes } = this.props
     return (
       <div>
-        <Chip className={classes.icon} label={<Avatar src='../../../../assets/images/music_flat_sign.png' />}
-          onClick={() => this.handleModification('b')} />
-        <Chip className={classes.icon} label={<Avatar src='../../../../assets/images/music_sharp_sign.png' />}
-          onClick={() => this.handleModification('#')} />
-        <Chip className={classes.icon} label={<Avatar src='../../../../assets/images/music_none_sign.png' />}
-          onClick={() => this.handleModification('n')} />
+            <Chip className={classes.icon} label={'\u266D'} onClick={() => this.handleModification('b')} />
+            <Chip className={classes.icon} label={'\u266F'} onClick={() => this.handleModification('#')} />
+            <Chip className={classes.icon} label={'\u266E'} onClick={() => this.handleModification('n')} />
         <div ref={el => { this.el = el }} />
         { this.props.editable ? <Button raised onClick={() => { this.saveSolution() }}>{this.state.saveButton}</Button> : null }
       </div>
