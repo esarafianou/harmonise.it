@@ -11,6 +11,7 @@ const styles = theme => ({
     width: 35,
     height: 35,
     marginLeft: 5,
+    fontSize: 30,
     backgroundColor: '#BEEBEF',
     '&:hover': {
       backgroundColor: '#BEEBEF'
@@ -18,6 +19,19 @@ const styles = theme => ({
     '&:focus': {
       backgroundColor: '#BEEBEF'
     }
+  },
+  image: {
+    height: 21,
+    width: 23,
+    marginBottom: 0,
+    paddingBottom: 0
+  },
+  whole: {
+    height: 21,
+    width: 26,
+    marginBottom: 0,
+    padding: 0,
+    paddingLeft: 4
   }
 })
 
@@ -36,6 +50,7 @@ class SolutionData extends React.Component {
     }
     this.eventListener = this.eventListener.bind(this)
     this.handleModification = this.handleModification.bind(this)
+    this.modifyDuration = this.modifyDuration.bind(this)
   }
 
   saveSolution () {
@@ -129,6 +144,69 @@ class SolutionData extends React.Component {
     this.setState({solutionData: solutionData})
   }
 
+  modifyDuration (duration) {
+    const cursor = this.state.cursor
+    const solutionData = {...this.state.solutionData}
+    const pauseHeightAdjustment = {
+      'soprano': 'c/5',
+      'alto': 'g/4',
+      'tenoro': 'f/4',
+      'bass': 'e/3'
+    }
+    const [ numBeats, beatValue ] = this.state.themeData.tempo.split('/')
+    const sixteenthsInBar = 16 / parseInt(beatValue, 10) * parseInt(numBeats, 10)
+    const newDurationInSixteenths = 16 / duration
+    let positionInBar = 0
+    let i = 0
+    while (i < cursor.position) {
+      positionInBar += 16 / solutionData[cursor.voice][i].duration
+      if (positionInBar === sixteenthsInBar) {
+        positionInBar = 0
+      }
+      i += 1
+    }
+    if (positionInBar + newDurationInSixteenths > sixteenthsInBar) {
+      this.setState({notEnoughSpace: true})
+      setTimeout(() => { this.setState({notEnoughSpace: false}) }, 2000)
+    } else {
+      const prevDuration = solutionData[cursor.voice][cursor.position].duration
+      solutionData[cursor.voice][cursor.position].duration = duration
+      if (prevDuration <= duration) { // will only insert new notes
+        let additionalNotesToInsert = duration / prevDuration - 1
+        let position = cursor.position + 1
+        while (additionalNotesToInsert !== 0) {
+          const newNote = {
+            key: pauseHeightAdjustment[cursor.voice],
+            duration: duration,
+            type: 'pause',
+            accidental: '',
+            hint: '',
+            rank: null
+          }
+          solutionData[cursor.voice].splice(position, 0, newNote)
+          additionalNotesToInsert = Math.floor(additionalNotesToInsert / 2)
+          duration = duration / 2
+          position += 1
+        }
+      } else { // will modify the rest of the bar
+        let sixteenthsToModify = 16 / duration - 16 / prevDuration
+        i += 1
+        while (sixteenthsToModify !== 0) {
+          let durationInSixteenths = 16 / solutionData[cursor.voice][i].duration
+          if (sixteenthsToModify >= durationInSixteenths) {
+            solutionData[cursor.voice].splice(i, 1)
+            sixteenthsToModify -= durationInSixteenths
+          } else {
+            solutionData[cursor.voice][i].duration *= 2
+            const newNote = {...solutionData[cursor.voice][i]}
+            solutionData[cursor.voice].splice(i + 1, 0, newNote)
+          }
+        }
+      }
+    }
+    this.setState({solutionData: solutionData})
+  }
+
   componentDidMount () {
     document.addEventListener('keydown', this.eventListener)
     this.setState({ themeData: JSON.parse(this.props.themeData), solutionData: JSON.parse(this.props.solution.solution_data) })
@@ -155,9 +233,20 @@ class SolutionData extends React.Component {
     const { classes } = this.props
     return (
       <div>
+        {this.state.notEnoughSpace
+          ? <p className='notification'>Not enough beats in this bar</p> : null }
+        { this.props.editable
+          ? <div>
             <Chip className={classes.icon} label={'\u266D'} onClick={() => this.handleModification('b')} />
             <Chip className={classes.icon} label={'\u266F'} onClick={() => this.handleModification('#')} />
             <Chip className={classes.icon} label={'\u266E'} onClick={() => this.handleModification('n')} />
+            <Chip className={classes.icon} label={<img className={classes.whole} src='../../../../assets/images/whole.png' />} onClick={() => this.modifyDuration(1)} />
+            <Chip className={classes.icon} label={<img className={classes.image} src='../../../../assets/images/half.png' />} onClick={() => this.modifyDuration(2)} />
+            <Chip className={classes.icon} label={'\u2669'} onClick={() => this.modifyDuration(4)} />
+            <Chip className={classes.icon} label={'\u266A'} onClick={() => this.modifyDuration(8)} />
+            <Chip className={classes.icon} label={<img className={classes.image} src='../../../../assets/images/sixteenth.png' />} onClick={() => this.modifyDuration(16)} />
+          </div>
+        : null }
         <div ref={el => { this.el = el }} />
         { this.props.editable ? <Button raised onClick={() => { this.saveSolution() }}>{this.state.saveButton}</Button> : null }
       </div>
