@@ -137,7 +137,7 @@ const mapCursorVoices = {
 }
 
 export default function renderMusicPiece (element, musicPiece, editable, cursor, givenVoice) {
-  let system, systemResults, voicesToBeRendered, stavesToBeRendered, notes, stave
+  let system, systemResults, voicesToBeRendered, beamsToBeRendered, stavesToBeRendered, notes, stave
   let factoryWidth = 1000
   let x = 20
   let y = 0
@@ -145,7 +145,7 @@ export default function renderMusicPiece (element, musicPiece, editable, cursor,
   let beatValue = musicPiece.tempo.split('/')[1]
   let changeLine = false
   let staveNotesIterator = [[], []]
-  let voices, currentVoice, barCompleted, barWidth
+  let voices, currentVoice, barCompleted, barWidth, beams
 
   let initResults = init(element, factoryWidth)
   let factory = initResults.factory
@@ -161,6 +161,7 @@ export default function renderMusicPiece (element, musicPiece, editable, cursor,
   }
   for (let i = 0; i < numOfBars; i++) {
     voicesToBeRendered = []
+    beamsToBeRendered = []
     stavesToBeRendered = []
     if (i === 0) {
       barWidth = 280
@@ -175,6 +176,7 @@ export default function renderMusicPiece (element, musicPiece, editable, cursor,
 
     for (let j = 0; j < musicPiece.staves.length; j++) {
       voices = []
+      beams = []
       for (let k = 0; k < musicPiece.staves[j].voices.length; k++) {
         currentVoice = musicPiece.staves[j].voices[k]
         barCompleted = false
@@ -189,6 +191,7 @@ export default function renderMusicPiece (element, musicPiece, editable, cursor,
         staveNotesIterator[j][k] = notesToStaveResults.iterator
         notes = notesToStaveResults.notesArray
         voices.push(new VF.Voice({num_beats: numBeats, beatValue: beatValue}).addTickables(notes))
+        beams.push(VF.Beam.generateBeams(notes))
       }
       stave = system.addStave({
         voices: voices
@@ -201,12 +204,18 @@ export default function renderMusicPiece (element, musicPiece, editable, cursor,
         stave.addClef(musicPiece.staves[j].clef).addKeySignature(musicPiece.key)
       }
       voicesToBeRendered.push(voices)
+      beamsToBeRendered.push(beams)
       stavesToBeRendered.push(stave)
     }
     system = addConnectors(system, i, changeLine, numOfBars)
     for (let i = 0; i < voicesToBeRendered.length; i++) {
       factory.draw()
       voicesToBeRendered[i].forEach((v) => { v.draw(context, stavesToBeRendered[i]) })
+      beamsToBeRendered[i].forEach((b) => {
+        for (let beam of b) {
+          beam.setContext(context).draw()
+        }
+      })
     }
   }
 }
