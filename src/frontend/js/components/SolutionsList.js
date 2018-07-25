@@ -61,6 +61,12 @@ class SolutionsList extends React.Component {
         </div>
       )
     })
+
+  componentDidMount () {
+    if (!this.props.loggedIn) {
+      window.sessionStorage.setItem('location', this.props.location.pathname)
+      this.props.router.push('/login')
+    }
   }
 
   render () {
@@ -71,9 +77,11 @@ class SolutionsList extends React.Component {
           <Typography type='title' className={classes.text}>
             My Solutions
           </Typography>
-          <List>
+          {this.props.loggedIn
+          ? <List>
             { this.createSolutionsList(this.props.solutions) }
           </List>
+          : null}
         </Paper>
       </Grid>
     )
