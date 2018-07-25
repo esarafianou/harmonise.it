@@ -39,15 +39,23 @@ class Solution extends React.Component {
         </Grid>
       </Grid>
     )
+
+  componentDidMount () {
+    if (!this.props.loggedIn) {
+      window.sessionStorage.setItem('location', this.props.location.pathname)
+      this.props.router.push('/login')
+    }
   }
 
   render () {
     const { classes } = this.props
     return (
       <Grid justify='center' spacing={0} container className={classes.root}>
-        <Paper className={classes.paper}>
+        { this.props.loggedIn
+        ? <Paper className={classes.paper}>
           { this.createSolutionDetails(this.props.solution) }
         </Paper>
+        : null }
       </Grid>
     )
   }

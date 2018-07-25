@@ -84,8 +84,14 @@ class Login extends React.Component {
     axios.post('/api/login', data, config)
     .then((response) => {
       if (response.status === 200) {
-        this.props.router.push('/')
+        const prevLocation = window.sessionStorage.getItem('location')
         this.props.handleLogin(response.data.username)
+        if (prevLocation !== null) {
+          window.sessionStorage.removeItem('location')
+          this.props.router.push(prevLocation)
+        } else {
+          this.props.router.push('/')
+        }
       } else {
         this.setState({invalidLogin: true})
       }
