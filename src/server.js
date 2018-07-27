@@ -3,11 +3,16 @@ import express from 'express'
 import graphQLHTTP from 'express-graphql'
 import passport from 'passport'
 import bodyParser from 'body-parser'
+import history from 'connect-history-api-fallback'
+import compression from 'compression'
 import { schema } from './api/schema'
 import './auth'
 
 const app = express()
 const graphqlHttpConfig = (schema) => ({ schema, pretty: true, graphiql: true })
+
+app.use(compression())
+app.use(history())
 
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }))
 app.use(passport.initialize())
