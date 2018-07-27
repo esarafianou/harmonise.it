@@ -264,11 +264,11 @@ class SolutionData extends React.Component {
             <Chip className={classes.icon} label={'\u266D'} onClick={() => this.handleModification('b')} />
             <Chip className={classes.icon} label={'\u266F'} onClick={() => this.handleModification('#')} />
             <Chip className={classes.icon} label={'\u266E'} onClick={() => this.handleModification('n')} />
-            <Chip className={classes.icon} label={<img className={classes.whole} src='../../../../assets/images/whole.png' />} onClick={() => this.modifyDuration(1)} />
-            <Chip className={classes.icon} label={<img className={classes.image} src='../../../../assets/images/half.png' />} onClick={() => this.modifyDuration(2)} />
+            <Chip className={classes.icon} label={<img className={classes.whole} src='/assets/images/whole.png' />} onClick={() => this.modifyDuration(1)} />
+            <Chip className={classes.icon} label={<img className={classes.image} src='/assets/images/half.png' />} onClick={() => this.modifyDuration(2)} />
             <Chip className={classes.icon} label={'\u2669'} onClick={() => this.modifyDuration(4)} />
             <Chip className={classes.icon} label={'\u266A'} onClick={() => this.modifyDuration(8)} />
-            <Chip className={classes.icon} label={<img className={classes.image} src='../../../../assets/images/sixteenth.png' />} onClick={() => this.modifyDuration(16)} />
+            <Chip className={classes.icon} label={<img className={classes.image} src='/assets/images/sixteenth.png' />} onClick={() => this.modifyDuration(16)} />
           </div>
         : null }
         <div ref={el => { this.el = el }} />
