@@ -2,6 +2,7 @@ const webpack = require('webpack')
 const pathModule = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   entry: './src/frontend/js/app.js',
@@ -29,7 +30,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
-    new UglifyJSPlugin()
+    new UglifyJSPlugin(),
+    new CopyWebpackPlugin([{ from: './assets', to: './assets' }])
   ],
   output: {
     publicPath: '/',
