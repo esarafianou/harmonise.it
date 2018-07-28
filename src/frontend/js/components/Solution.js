@@ -35,7 +35,7 @@ class Solution extends React.Component {
         </Grid>
         <Grid item md={12}>
           <SolutionData solution={solution} themeData={solution.theme.theme_data} id={solution.id}
-            givenVoice={solution.theme.given_voice} editable />
+            givenVoice={solution.theme.given_voice} router={this.props.router} editable />
         </Grid>
       </Grid>
     )

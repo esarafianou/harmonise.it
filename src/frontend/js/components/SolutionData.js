@@ -5,6 +5,7 @@ import { withStyles } from 'material-ui/styles'
 import renderSolution from '../helpers/vexFlowSolutionRendering'
 import { constructThemeSolutionData } from '../helpers/constructThemeSolutionData'
 import updateSolutionMutation from './updateSolutionMutation'
+import deleteSolutionMutation from './deleteSolutionMutation'
 
 const styles = theme => ({
   icon: {
@@ -32,6 +33,9 @@ const styles = theme => ({
     marginBottom: 0,
     padding: 0,
     paddingLeft: 4
+  },
+  button: {
+    marginLeft: 10
   }
 })
 
@@ -57,6 +61,10 @@ class SolutionData extends React.Component {
     updateSolutionMutation.commit(this.props, this.state.solutionData)
     this.setState({saveButton: 'Saved'})
     setTimeout(() => { this.setState({saveButton: 'Save'}) }, 2000)
+  }
+
+  deleteSolution () {
+    deleteSolutionMutation.commit(this.props)
   }
 
   _renderSolution (element, solutionInfo) {
@@ -248,7 +256,8 @@ class SolutionData extends React.Component {
           </div>
         : null }
         <div ref={el => { this.el = el }} />
-        { this.props.editable ? <Button raised onClick={() => { this.saveSolution() }}>{this.state.saveButton}</Button> : null }
+        { this.props.editable ? <Button raised className={classes.button} color='primary' onClick={() => { this.saveSolution() }}>{this.state.saveButton}</Button> : null }
+        { this.props.editable ? <Button raised className={classes.button} onClick={() => { this.deleteSolution() }}>delete</Button> : null }
       </div>
     )
   }
