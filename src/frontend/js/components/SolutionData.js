@@ -4,6 +4,7 @@ import { Button, Chip } from 'material-ui'
 import { withStyles } from 'material-ui/styles'
 import renderSolution from '../helpers/vexFlowSolutionRendering'
 import { constructThemeSolutionData } from '../helpers/constructThemeSolutionData'
+import DeletionModal from './DeletionModal'
 import updateSolutionMutation from './updateSolutionMutation'
 import deleteSolutionMutation from './deleteSolutionMutation'
 
@@ -50,11 +51,15 @@ class SolutionData extends React.Component {
       },
       themeData: '',
       solutionData: '',
-      saveButton: 'save'
+      saveButton: 'save',
+      openModal: false
     }
     this.eventListener = this.eventListener.bind(this)
     this.handleModification = this.handleModification.bind(this)
     this.modifyDuration = this.modifyDuration.bind(this)
+    this.openModal = this.openModal.bind(this)
+    this.closeModal = this.closeModal.bind(this)
+    this.deleteSolution = this.deleteSolution.bind(this)
   }
 
   saveSolution () {
@@ -65,6 +70,14 @@ class SolutionData extends React.Component {
 
   deleteSolution () {
     deleteSolutionMutation.commit(this.props)
+  }
+
+  openModal () {
+    this.setState({openModal: true})
+  }
+
+  closeModal () {
+    this.setState({openModal: false})
   }
 
   _renderSolution (element, solutionInfo) {
@@ -245,6 +258,9 @@ class SolutionData extends React.Component {
           ? <p className='notification'>Not enough beats in this bar</p> : null }
         { this.props.editable
           ? <div>
+            {this.state.openModal
+            ? <DeletionModal deleteSolution={this.deleteSolution} closeModal={this.closeModal} />
+            : null }
             <Chip className={classes.icon} label={'\u266D'} onClick={() => this.handleModification('b')} />
             <Chip className={classes.icon} label={'\u266F'} onClick={() => this.handleModification('#')} />
             <Chip className={classes.icon} label={'\u266E'} onClick={() => this.handleModification('n')} />
@@ -257,7 +273,7 @@ class SolutionData extends React.Component {
         : null }
         <div ref={el => { this.el = el }} />
         { this.props.editable ? <Button raised className={classes.button} color='primary' onClick={() => { this.saveSolution() }}>{this.state.saveButton}</Button> : null }
-        { this.props.editable ? <Button raised className={classes.button} onClick={() => { this.deleteSolution() }}>delete</Button> : null }
+        { this.props.editable ? <Button raised className={classes.button} onClick={() => { this.openModal() }}>delete</Button> : null }
       </div>
     )
   }
