@@ -46,6 +46,7 @@ class Register extends React.Component {
   }
 
   showPasswordsNotMatch () {
+    setTimeout(() => { this.setState({passwordsNotMatch: false}) }, 2000)
     return (
       <p className='notification'> Passwords do not match </p>
     )
@@ -78,8 +79,8 @@ class Register extends React.Component {
       registerUserMutation.commit(this.props, username, password, confirmPassword)
     } else {
       this.setState({ passwordsNotMatch: true })
-      this.state.password.value = ''
-      this.state.confirmpassword.value = ''
+      this.setState({ password: '' })
+      this.setState({ confirmPassword: '' })
     }
   }
 
