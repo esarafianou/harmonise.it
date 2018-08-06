@@ -30,37 +30,54 @@ const styles = theme => ({
 class SolutionsList extends React.Component {
   createSolutionsList (solutions) {
     const { classes } = this.props
+    if (solutions.length !== 0) {
+      console.log(solutions)
+      return solutions.map((solution, i) => {
+        const solutionLink = '/solutions/' + solution.id
+        const chipStyle = {
+          backgroundColor: difficulty[solution.theme.difficulty].color,
+          color: 'white',
+          fontWeight: 'bold',
+          float: 'right'
+        }
 
-    return solutions.map((solution, i) => {
-      const solutionLink = '/solutions/' + solution.id
-      const chipStyle = {
-        backgroundColor: difficulty[solution.theme.difficulty].color,
-        color: 'white',
-        fontWeight: 'bold',
-        float: 'right'
-      }
-
+        return (
+          <div key={i}>
+            <Divider />
+            <ListItem>
+              <Grid container>
+                <Grid item md={10}>
+                  <Typography type='body2' className={classes.descr}>{solution.theme.description}</Typography>
+                </Grid>
+                <Grid item md={2}>
+                  <Chip label={difficulty[solution.theme.difficulty].name} style={chipStyle} />
+                </Grid>
+                <Grid item md={12}>
+                  <SolutionData solution={solution} themeData={solution.theme.theme_data}
+                    givenVoice={solution.theme.given_voice} editable={false} />
+                </Grid>
+                <Link to={solutionLink} className={classes.link}>Continue editing</Link>
+              </Grid>
+            </ListItem>
+          </div>
+        )
+      })
+    } else {
       return (
-        <div key={i}>
-          <Divider />
-          <ListItem>
-            <Grid container>
-              <Grid item md={10}>
-                <Typography type='body2' className={classes.descr}>{solution.theme.description}</Typography>
-              </Grid>
-              <Grid item md={2}>
-                <Chip label={difficulty[solution.theme.difficulty].name} style={chipStyle} />
-              </Grid>
-              <Grid item md={12}>
-                <SolutionData solution={solution} themeData={solution.theme.theme_data}
-                  givenVoice={solution.theme.given_voice} editable={false} />
-              </Grid>
-              <Link to={solutionLink} className={classes.link}>Continue editing</Link>
-            </Grid>
-          </ListItem>
-        </div>
+        <Typography type='body1' className={classes.descr}>
+          You haven't started solving any theme. Check available themes
+          <Link to='/themes' className={classes.link}> here</Link>!
+        </Typography>
+
       )
-    })
+    }
+  }
+
+  componentDidMount () {
+    if (!this.props.loggedIn) {
+      window.sessionStorage.setItem('location', this.props.location.pathname)
+      this.props.router.push('/login')
+    }
   }
 
   render () {
@@ -71,9 +88,11 @@ class SolutionsList extends React.Component {
           <Typography type='title' className={classes.text}>
             My Solutions
           </Typography>
-          <List>
+          {this.props.loggedIn
+          ? <List>
             { this.createSolutionsList(this.props.solutions) }
           </List>
+          : null}
         </Paper>
       </Grid>
     )
