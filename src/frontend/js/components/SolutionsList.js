@@ -33,7 +33,6 @@ class SolutionsList extends React.Component {
 
     return solutions.map((solution, i) => {
       const solutionLink = '/solutions/' + solution.id
-
       const chipStyle = {
         backgroundColor: difficulty[solution.theme.difficulty].color,
         color: 'white',
@@ -86,8 +85,8 @@ export default createFragmentContainer(withStyles(styles)(SolutionsList),
     fragment SolutionsList_solutions on SolutionTheme @relay(plural: true) {
       id,
       theme {
-        description,
-        difficulty,
+        description
+        difficulty
         given_voice
         theme_data
       }

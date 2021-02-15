@@ -6,10 +6,10 @@ export const constructThemeSolutionData = (themeData, solutionData, givenVoice) 
   let clefStaveVoices = []
   if (givenVoice === 'soprano') {
     trebleStaveVoices.push(themeData.voice)
-    trebleStaveVoices.push(solutionData[0], solutionData[1])
-    clefStaveVoices.push(solutionData[2])
+    trebleStaveVoices.push(solutionData.alto, solutionData.tenoro)
+    clefStaveVoices.push(solutionData.bass)
   } else {
-    trebleStaveVoices = solutionData
+    trebleStaveVoices.push(solutionData.soprano, solutionData.alto, solutionData.tenoro)
     clefStaveVoices.push(themeData.voice)
   }
   let staves = []
