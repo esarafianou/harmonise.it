@@ -20,7 +20,7 @@
     "babel-cli": "^6.26.0",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
-    "express": "^4.15.3",
+    "express": "^4.19.2",
     "express-graphql": "^0.6.7",
     "express-session": "^1.15.6",
     "farce": "^0.2.4",
