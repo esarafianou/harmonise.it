@@ -28,7 +28,7 @@
     "found-relay": "0.3.0-alpha.6",
     "graphql": "^0.11.0",
     "graphql-relay": "^0.5.4",
-    "graphql-sequelize": "^5.6.1",
+    "graphql-sequelize": "^6.0.0",
     "isomorphic-fetch": "^2.2.1",
     "material-ui": "^1.0.0-beta.29",
     "passport": "^0.4.0",
